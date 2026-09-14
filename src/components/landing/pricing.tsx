@@ -47,13 +47,9 @@ export function Pricing() {
               )}
             >
               {highlighted && (
-                <motion.span
-                  animate={{ scale: [1, 1.06, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="mb-3 inline-flex w-fit items-center rounded-full bg-amber-600 px-2.5 py-0.5 text-xs font-medium text-white"
-                >
+                <span className="mb-3 inline-flex w-fit items-center rounded-full bg-amber-600 px-2.5 py-0.5 text-xs font-medium text-white">
                   Le plus choisi
-                </motion.span>
+                </span>
               )}
               <h3 className="text-lg font-medium">{tier.name}</h3>
               <p className="mt-3 text-3xl font-semibold tracking-tight">

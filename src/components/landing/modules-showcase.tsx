@@ -65,24 +65,25 @@ export function ModulesShowcase() {
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
               }}
-              whileHover={{ y: -6 }}
+              whileHover={{ y: -4 }}
               className={cn(
-                "relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background p-7 shadow-sm transition-shadow hover:shadow-xl",
+                "flex flex-col rounded-2xl border border-border/60 bg-background p-7 shadow-sm transition-shadow hover:shadow-lg",
                 i === 1 && "lg:-translate-y-3",
               )}
             >
-              <div
-                aria-hidden
-                className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-400 to-orange-400"
-              />
-              <div className="flex size-11 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
-                <module.icon className="size-6" />
+              <div className="flex items-center justify-between">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-muted text-amber-700 dark:text-amber-400">
+                  <module.icon className="size-5.5" />
+                </div>
+                <span className="font-mono text-xs text-muted-foreground/70 tabular-nums">
+                  0{i + 1}
+                </span>
               </div>
               <h3 className="mt-5 text-lg font-medium">{module.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 {module.description}
               </p>
-              <ul className="mt-5 space-y-2.5">
+              <ul className="mt-5 space-y-2.5 border-t border-border/60 pt-5">
                 {module.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
                     <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />

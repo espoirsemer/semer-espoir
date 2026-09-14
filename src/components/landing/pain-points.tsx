@@ -50,7 +50,7 @@ export function PainPoints() {
               whileHover={{ y: -4 }}
               className="flex items-start gap-4 rounded-2xl border border-border/60 bg-background p-6 shadow-sm transition-shadow hover:shadow-md"
             >
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-amber-700 dark:text-amber-400">
                 <item.icon className="size-5" />
               </div>
               <p className="pt-1.5 text-lg">{item.text}</p>

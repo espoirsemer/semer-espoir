@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/landing/site-header";
 import { Hero } from "@/components/landing/hero";
+import { TrustBar } from "@/components/landing/trust-bar";
 import { PainPoints } from "@/components/landing/pain-points";
 import { Pillars } from "@/components/landing/pillars";
 import { ModulesShowcase } from "@/components/landing/modules-showcase";
@@ -16,6 +17,7 @@ export default function LandingPage() {
       <SiteHeader />
       <main className="flex-1">
         <Hero />
+        <TrustBar />
         <PainPoints />
         <Pillars />
         <ModulesShowcase />

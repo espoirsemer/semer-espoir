@@ -1,12 +1,16 @@
-import { Quote } from "lucide-react";
+"use client";
+
+import { motion } from "motion/react";
+import { Quote, Star } from "lucide-react";
+import { Reveal } from "./reveal";
 
 const PLACEHOLDER_COUNT = 3;
 
 export function Testimonials() {
   return (
-    <section className="border-y border-border/60 bg-muted/30">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-        <div className="mx-auto max-w-2xl text-center">
+    <section className="bg-muted/30">
+      <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Ce qu&apos;en disent les familles
           </h2>
@@ -14,23 +18,41 @@ export function Testimonials() {
             [Placeholder — à remplacer par de vrais témoignages avant la mise
             en ligne publique.]
           </p>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-3">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={{ show: { transition: { staggerChildren: 0.12 } } }}
+          className="mt-12 grid gap-6 sm:grid-cols-3"
+        >
           {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
-            <div
+            <motion.div
               key={i}
-              className="flex flex-col rounded-2xl border border-dashed border-border bg-background p-6"
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+              }}
+              whileHover={{ y: -4 }}
+              className="flex flex-col rounded-2xl border border-dashed border-border bg-background p-6 shadow-sm"
             >
-              <Quote className="size-6 text-amber-500" />
+              <div className="flex items-center justify-between">
+                <Quote className="size-6 text-amber-500" />
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <Star key={s} className="size-3.5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+              </div>
               <p className="mt-4 flex-1 text-sm text-muted-foreground italic">
                 « [Témoignage à venir — expérience concrète d&apos;un parent
                 avec Semer Espoir.] »
               </p>
               <p className="mt-4 text-sm font-medium">[Prénom], parent</p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,5 +1,9 @@
+"use client";
+
+import { motion } from "motion/react";
 import { Check, PlayCircle, Users, NotebookPen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Reveal } from "./reveal";
 
 const MODULES = [
   {
@@ -39,23 +43,38 @@ const MODULES = [
 
 export function ModulesShowcase() {
   return (
-    <section id="modules" className="border-y border-border/60 bg-muted/30">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-        <div className="mx-auto max-w-2xl text-center">
+    <section id="modules" className="relative overflow-hidden bg-muted/30">
+      <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+        <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Ce que vous trouverez dans votre espace
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={{ show: { transition: { staggerChildren: 0.12 } } }}
+          className="mt-14 grid gap-6 lg:grid-cols-3"
+        >
           {MODULES.map((module, i) => (
-            <div
+            <motion.div
               key={module.title}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+              }}
+              whileHover={{ y: -6 }}
               className={cn(
-                "flex flex-col rounded-2xl border border-border/60 bg-background p-7",
-                i === 1 && "lg:-translate-y-3 lg:shadow-lg",
+                "relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background p-7 shadow-sm transition-shadow hover:shadow-xl",
+                i === 1 && "lg:-translate-y-3",
               )}
             >
+              <div
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-amber-400 to-orange-400"
+              />
               <div className="flex size-11 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300">
                 <module.icon className="size-6" />
               </div>
@@ -71,9 +90,9 @@ export function ModulesShowcase() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

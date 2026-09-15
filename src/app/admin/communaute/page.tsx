@@ -1,26 +1,59 @@
+import Link from "next/link";
+import { Hash } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/lib/supabase/server";
+import type { CommunityChannel } from "@/types/database.types";
+import { ChannelForm } from "./channel-form";
+import { DeleteChannelButton } from "./delete-channel-button";
 
-export default function AdminCommunautePage() {
+export default async function AdminCommunautePage() {
+  const supabase = await createClient();
+  const { data: channels } = await supabase
+    .from("community_channels")
+    .select("*")
+    .order("name");
+
+  const list = (channels as CommunityChannel[] | null) ?? [];
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Modération de la communauté</h1>
         <p className="text-muted-foreground">
-          Épingler, supprimer, gérer les salons de discussion.
+          Créez des canaux, épinglez ou supprimez des messages.
         </p>
       </div>
+
       <Card>
         <CardHeader>
-          <Badge variant="secondary" className="w-fit">Module 5 — à construire</Badge>
-          <CardTitle className="mt-2">Outils de modération</CardTitle>
-          <CardDescription>
-            Actions sur `community_messages` (pinned, suppression) et gestion
-            des `community_channels`, déjà autorisées pour le rôle admin par
-            les policies RLS.
-          </CardDescription>
+          <CardTitle>Créer un canal</CardTitle>
         </CardHeader>
+        <div className="px-6 pb-6">
+          <ChannelForm />
+        </div>
       </Card>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        {list.map((channel) => (
+          <Card key={channel.id}>
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <Link
+                  href={`/admin/communaute/${channel.slug}`}
+                  className="flex items-center gap-2 hover:underline"
+                >
+                  <Hash className="size-4 text-amber-600 dark:text-amber-400" />
+                  <CardTitle>{channel.name}</CardTitle>
+                </Link>
+                <DeleteChannelButton channelId={channel.id} />
+              </div>
+              {channel.description && (
+                <CardDescription>{channel.description}</CardDescription>
+              )}
+            </CardHeader>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

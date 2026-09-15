@@ -1,27 +1,55 @@
+import Link from "next/link";
+import { Hash } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/lib/supabase/server";
+import type { CommunityChannel } from "@/types/database.types";
 
-export default function CommunautePage() {
+export default async function CommunautePage() {
+  const supabase = await createClient();
+  const { data: channels } = await supabase
+    .from("community_channels")
+    .select("*")
+    .order("name");
+
+  const list = (channels as CommunityChannel[] | null) ?? [];
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Communauté</h1>
         <p className="text-muted-foreground">
-          Canaux thématiques : #alimentation, #sommeil, #scolarité, #petites-victoires…
+          Échangez avec d&apos;autres parents, par canaux thématiques.
         </p>
       </div>
-      <Card>
-        <CardHeader>
-          <Badge variant="secondary" className="w-fit">Module 3 — à construire</Badge>
-          <CardTitle className="mt-2">Fils de discussion &amp; réactions</CardTitle>
-          <CardDescription>
-            Liste des canaux (`community_channels`), messages avec réponses en
-            fil et réactions (`community_messages`, `community_reactions`),
-            en lecture seule pour le Tier 1 et publication active pour le
-            Tier 2+. Les notifications de réponse passeront par Brevo.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+
+      {list.length === 0 ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Aucun canal pour l&apos;instant</CardTitle>
+            <CardDescription>
+              La spécialiste n&apos;a pas encore créé de canaux de discussion.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      ) : (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {list.map((channel) => (
+            <Link key={channel.id} href={`/espace-parent/communaute/${channel.slug}`}>
+              <Card className="h-full transition-colors hover:bg-accent">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <Hash className="size-4 text-amber-600 dark:text-amber-400" />
+                    <CardTitle>{channel.name}</CardTitle>
+                  </div>
+                  {channel.description && (
+                    <CardDescription>{channel.description}</CardDescription>
+                  )}
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

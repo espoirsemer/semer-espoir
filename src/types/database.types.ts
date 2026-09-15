@@ -116,6 +116,15 @@ export interface ConsultationBooking {
   created_at: string;
 }
 
+export interface LiveSession {
+  id: string;
+  title: string;
+  description: string | null;
+  starts_at: string;
+  meeting_url: string;
+  created_at: string;
+}
+
 // Placeholder minimal compatible avec le générique attendu par @supabase/ssr.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Database = any;

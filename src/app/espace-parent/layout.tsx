@@ -1,4 +1,13 @@
-import { Home, PlayCircle, MessagesSquare, NotebookPen, UserRound, ShieldCheck } from "lucide-react";
+import {
+  Home,
+  PlayCircle,
+  MessagesSquare,
+  MessageCircle,
+  CalendarClock,
+  NotebookPen,
+  UserRound,
+  ShieldCheck,
+} from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { requireProfile } from "@/lib/auth";
 
@@ -6,6 +15,8 @@ const PARENT_NAV = [
   { href: "/espace-parent", label: "Accueil", icon: <Home /> },
   { href: "/espace-parent/hub", label: "Hub de contenu", icon: <PlayCircle /> },
   { href: "/espace-parent/communaute", label: "Communauté", icon: <MessagesSquare /> },
+  { href: "/espace-parent/messagerie", label: "Messagerie", icon: <MessageCircle /> },
+  { href: "/espace-parent/consultations", label: "Consultations", icon: <CalendarClock /> },
   { href: "/espace-parent/journal", label: "Journal de bord", icon: <NotebookPen /> },
   { href: "/espace-parent/profil", label: "Profil de l'enfant", icon: <UserRound /> },
 ];

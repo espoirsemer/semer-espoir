@@ -84,6 +84,38 @@ export interface SubscriptionPlan {
   updated_at: string;
 }
 
+export interface DirectConversation {
+  id: string;
+  parent_a_id: string;
+  parent_b_id: string;
+  created_at: string;
+}
+
+export interface DirectMessage {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  body: string;
+  created_at: string;
+  read_at: string | null;
+}
+
+export interface ConsultationSlot {
+  id: string;
+  starts_at: string;
+  ends_at: string;
+  created_at: string;
+}
+
+export interface ConsultationBooking {
+  id: string;
+  slot_id: string;
+  parent_id: string;
+  child_id: string | null;
+  notes: string | null;
+  created_at: string;
+}
+
 // Placeholder minimal compatible avec le générique attendu par @supabase/ssr.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Database = any;

@@ -8,11 +8,17 @@ export async function signIn(_prevState: string | null, formData: FormData) {
   const password = formData.get("password") as string;
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     return error.message;
   }
 
-  redirect("/espace-parent");
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .single();
+
+  redirect(profile?.role === "admin" ? "/admin" : "/espace-parent");
 }

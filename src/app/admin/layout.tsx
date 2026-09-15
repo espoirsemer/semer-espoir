@@ -7,6 +7,7 @@ const ADMIN_NAV = [
   { href: "/admin/contenus", label: "Contenus" },
   { href: "/admin/communaute", label: "Modération" },
   { href: "/admin/abonnes", label: "Abonnés" },
+  { href: "/espace-parent", label: "Espace parent" },
 ];
 
 export default async function AdminLayout({

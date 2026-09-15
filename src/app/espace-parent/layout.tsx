@@ -15,12 +15,16 @@ export default async function EspaceParentLayout({
   children: React.ReactNode;
 }) {
   const profile = await requireProfile();
+  const navItems =
+    profile.role === "admin"
+      ? [...PARENT_NAV, { href: "/admin", label: "Panel Admin" }]
+      : PARENT_NAV;
 
   return (
     <div className="flex flex-1">
       <AppSidebar
         title="Espace parent"
-        items={PARENT_NAV}
+        items={navItems}
         userLabel={profile.full_name}
       />
       <main className="flex-1 overflow-y-auto p-8">{children}</main>

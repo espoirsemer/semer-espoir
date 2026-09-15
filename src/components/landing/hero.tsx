@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Sprout } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ProductMockup } from "./product-mockup";
+import { HeroPhoto } from "./hero-photo";
 import { EASE } from "./reveal";
 
 const fadeUp = {
@@ -80,7 +80,7 @@ export function Hero() {
         </motion.div>
 
         <div className="hidden lg:block">
-          <ProductMockup />
+          <HeroPhoto />
         </div>
       </div>
     </section>

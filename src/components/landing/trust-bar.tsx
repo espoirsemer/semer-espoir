@@ -3,7 +3,7 @@ import { Globe2, ShieldCheck, HeartHandshake, Sprout } from "lucide-react";
 const ITEMS = [
   { icon: Globe2, label: "Accessible partout, 100% en ligne" },
   { icon: ShieldCheck, label: "Vos données protégées et confidentielles" },
-  { icon: HeartHandshake, label: "Conçu par une spécialiste de l'autisme" },
+  { icon: HeartHandshake, label: "Porté par le centre ANLE, à Douala" },
   { icon: Sprout, label: "3 formules, sans engagement" },
 ];
 

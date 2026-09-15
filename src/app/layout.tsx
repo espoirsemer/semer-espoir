@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Semer Espoir",
   description:
-    "Accompagnement des familles autour de l'autisme : formation, communauté et suivi clinique.",
+    "Accompagnement des familles d'enfants à besoins spécifiques : formation, communauté et suivi clinique, porté par le centre ANLE à Douala.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

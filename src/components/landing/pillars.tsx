@@ -9,7 +9,7 @@ const PILLARS = [
     icon: GraduationCap,
     title: "Vous former",
     description:
-      "Des vidéos et des ressources terrain conçues par une spécialiste de l'autisme, pour agir avec des outils qui fonctionnent vraiment.",
+      "Des vidéos et des ressources terrain conçues par l'équipe du centre ANLE, pour agir avec des outils qui fonctionnent vraiment.",
   },
   {
     icon: MessagesSquare,
@@ -33,8 +33,8 @@ export function Pillars() {
           Un accompagnement à trois piliers
         </h2>
         <p className="mt-3 text-muted-foreground">
-          Parce que l&apos;autisme se vit au quotidien, pas seulement en
-          consultation.
+          Parce que le handicap de votre enfant se vit au quotidien, pas
+          seulement en consultation.
         </p>
       </Reveal>
 

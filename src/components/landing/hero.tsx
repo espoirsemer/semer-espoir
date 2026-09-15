@@ -42,7 +42,7 @@ export function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
           >
             <Sprout className="size-4" />
-            Formation, communauté et suivi pour les familles concernées par l&apos;autisme
+            Formation, communauté et suivi pour les familles d&apos;enfants à besoins spécifiques
           </motion.div>
 
           <motion.h1
@@ -57,9 +57,10 @@ export function Hero() {
             className="mt-5 max-w-xl text-lg text-muted-foreground text-balance sm:text-xl"
           >
             Semer Espoir accompagne au quotidien les parents d&apos;enfants
-            autistes : des formations concrètes, une communauté qui comprend,
-            et un suivi clinique à distance avec une spécialiste — où que vous
-            soyez dans le monde.
+            autistes, trisomiques, IMC ou porteurs de troubles
+            neurodéveloppementaux : des formations concrètes, une communauté
+            qui comprend, et un suivi clinique à distance avec une
+            spécialiste — où que vous soyez dans le monde.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-col gap-3 sm:flex-row">

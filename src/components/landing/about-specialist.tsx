@@ -7,7 +7,7 @@ export function AboutSpecialist() {
       <Reveal>
         <div className="rounded-3xl border border-border/60 bg-muted/30 p-8 sm:p-12">
           <div className="grid items-center gap-10 sm:grid-cols-[auto_1fr]">
-            <div className="size-28 shrink-0 overflow-hidden rounded-full ring-1 ring-border/60 sm:size-32">
+            <div className="size-28 shrink-0 overflow-hidden rounded-full bg-muted ring-1 ring-border/60 sm:size-32">
               <Image
                 src="/images/specialiste-carine-bakom.jpg"
                 alt="Carine Dorothée Bakom"

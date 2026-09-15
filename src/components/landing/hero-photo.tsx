@@ -16,7 +16,7 @@ export function HeroPhoto() {
       <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="overflow-hidden rounded-2xl border border-border/60 shadow-2xl shadow-amber-900/10"
+        className="overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-2xl shadow-amber-900/10"
       >
         <Image
           src="/images/hero-enfants.jpg"

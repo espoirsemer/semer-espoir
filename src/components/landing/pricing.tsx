@@ -5,12 +5,13 @@ import { motion } from "motion/react";
 import { Check } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { SUBSCRIPTION_TIERS } from "@/lib/stripe/config";
+import { PLAN_FEATURES, formatPrice } from "@/lib/pricing";
+import type { SubscriptionPlan, SubscriptionTier } from "@/types/database.types";
 import { Reveal } from "./reveal";
 
-const HIGHLIGHTED_TIER: keyof typeof SUBSCRIPTION_TIERS = "tier_2";
+const HIGHLIGHTED_TIER: SubscriptionTier = "tier_2";
 
-export function Pricing() {
+export function Pricing({ plans }: { plans: SubscriptionPlan[] }) {
   return (
     <section id="tarifs" className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
       <Reveal className="mx-auto max-w-2xl text-center">
@@ -29,11 +30,15 @@ export function Pricing() {
         variants={{ show: { transition: { staggerChildren: 0.12 } } }}
         className="mt-14 grid gap-6 lg:grid-cols-3"
       >
-        {Object.values(SUBSCRIPTION_TIERS).map((tier) => {
-          const highlighted = tier.key === HIGHLIGHTED_TIER;
+        {plans.map((plan) => {
+          const highlighted = plan.key === HIGHLIGHTED_TIER;
+          const meta = PLAN_FEATURES[plan.key];
+          const ctaHref = plan.payment_link || "/inscription";
+          const isExternal = Boolean(plan.payment_link);
+
           return (
             <motion.div
-              key={tier.key}
+              key={plan.key}
               variants={{
                 hidden: { opacity: 0, y: 30 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -51,38 +56,50 @@ export function Pricing() {
                   Le plus choisi
                 </span>
               )}
-              <h3 className="text-lg font-medium">{tier.name}</h3>
+              <h3 className="text-lg font-medium">{plan.name}</h3>
               <p className="mt-3 text-3xl font-semibold tracking-tight">
-                [Prix]
-                <span className="text-base font-normal text-muted-foreground">
-                  /mois
-                </span>
+                {formatPrice(plan)}
+                {plan.price_amount != null && (
+                  <span className="text-base font-normal text-muted-foreground">
+                    /mois
+                  </span>
+                )}
               </p>
               <ul className="mt-6 flex-1 space-y-2.5">
-                {tier.features.map((feature) => (
+                {meta.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
                     <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
                     <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}
               </ul>
-              <Link
-                href="/inscription"
-                className={cn(
-                  buttonVariants({ variant: highlighted ? "default" : "outline" }),
-                  "mt-7 w-full",
-                )}
-              >
-                Choisir {tier.name}
-              </Link>
+              {isExternal ? (
+                <a
+                  href={ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: highlighted ? "default" : "outline" }),
+                    "mt-7 w-full",
+                  )}
+                >
+                  Choisir {plan.name}
+                </a>
+              ) : (
+                <Link
+                  href={ctaHref}
+                  className={cn(
+                    buttonVariants({ variant: highlighted ? "default" : "outline" }),
+                    "mt-7 w-full",
+                  )}
+                >
+                  Choisir {plan.name}
+                </Link>
+              )}
             </motion.div>
           );
         })}
       </motion.div>
-
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        [Placeholder — tarifs à confirmer avant l&apos;ouverture des inscriptions.]
-      </p>
     </section>
   );
 }

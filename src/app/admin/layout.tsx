@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Vue Business" },
+  { href: "/admin/tarifs", label: "Tarifs" },
   { href: "/admin/contenus", label: "Contenus" },
   { href: "/admin/communaute", label: "Modération" },
   { href: "/admin/abonnes", label: "Abonnés" },

@@ -11,8 +11,11 @@ import { Testimonials } from "@/components/landing/testimonials";
 import { Faq } from "@/components/landing/faq";
 import { CtaBanner } from "@/components/landing/cta-banner";
 import { SiteFooter } from "@/components/landing/site-footer";
+import { getPricingPlans } from "@/lib/get-pricing-plans";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const plans = await getPricingPlans();
+
   return (
     <>
       <SiteHeader />
@@ -24,7 +27,7 @@ export default function LandingPage() {
         <ModulesShowcase />
         <AboutCentre />
         <AboutSpecialist />
-        <Pricing />
+        <Pricing plans={plans} />
         <Testimonials />
         <Faq />
         <CtaBanner />

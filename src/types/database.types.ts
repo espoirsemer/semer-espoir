@@ -75,6 +75,15 @@ export interface JournalEntry {
   created_at: string;
 }
 
+export interface SubscriptionPlan {
+  key: SubscriptionTier;
+  name: string;
+  price_amount: number | null;
+  price_currency: string;
+  payment_link: string | null;
+  updated_at: string;
+}
+
 // Placeholder minimal compatible avec le générique attendu par @supabase/ssr.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Database = any;

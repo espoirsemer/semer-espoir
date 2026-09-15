@@ -11,7 +11,7 @@ export function HeroPhoto() {
       initial={{ opacity: 0, y: 40, rotate: -2 }}
       animate={{ opacity: 1, y: 0, rotate: -2 }}
       transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
-      className="relative mx-auto w-full max-w-md"
+      className="relative mx-auto w-full max-w-lg"
     >
       <motion.div
         animate={{ y: [0, -10, 0] }}
@@ -21,9 +21,9 @@ export function HeroPhoto() {
         <Image
           src="/images/hero-enfants.jpg"
           alt="Une éducatrice du centre ANLE joue avec un groupe d'enfants à besoins spécifiques"
-          width={900}
-          height={1000}
-          className="aspect-4/5 w-full object-cover"
+          width={1448}
+          height={1086}
+          className="aspect-4/3 w-full object-cover"
           priority
         />
       </motion.div>

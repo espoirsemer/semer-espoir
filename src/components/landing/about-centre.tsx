@@ -28,7 +28,7 @@ export function AboutCentre() {
       <Reveal delay={0.15} className="mt-14 grid gap-10 lg:grid-cols-2 lg:items-center">
         <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted">
           <Image
-            src="/images/centre-enfant.jpg"
+            src="/images/centre-anle.jpg"
             alt="Une éducatrice du centre ANLE accompagne un enfant dans l'apprentissage de l'autonomie"
             width={1200}
             height={900}

@@ -52,3 +52,13 @@ export async function deleteMessage(messageId: string, slug: string) {
   revalidatePath(`/admin/communaute/${slug}`);
   revalidatePath(`/espace-parent/communaute/${slug}`);
 }
+
+export async function toggleChannelLock(channelId: string, locked: boolean, slug: string) {
+  await requireAdmin();
+  const supabase = await createClient();
+  await supabase.from("community_channels").update({ locked: !locked }).eq("id", channelId);
+  revalidatePath(`/admin/communaute/${slug}`);
+  revalidatePath("/admin/communaute");
+  revalidatePath(`/espace-parent/communaute/${slug}`);
+  revalidatePath("/espace-parent/communaute");
+}

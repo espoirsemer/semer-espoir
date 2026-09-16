@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { QUICK_EMOJIS } from "./emojis";
 
 export async function postMessage(_prevState: string | null, formData: FormData) {
   const profile = await requireProfile();
@@ -26,11 +27,45 @@ export async function postMessage(_prevState: string | null, formData: FormData)
 
   if (error) {
     if (error.code === "42501" || error.message.includes("row-level security")) {
-      return "Votre formule ne permet pas encore de publier. Passez à la formule Guidance ou VIP pour participer.";
+      return "La spécialiste a temporairement limité l'envoi de messages dans ce canal.";
     }
     return error.message;
   }
 
   revalidatePath(`/espace-parent/communaute/${channelSlug}`);
   return "success";
+}
+
+export async function toggleReaction(messageId: string, emoji: string, channelSlug: string) {
+  if (!QUICK_EMOJIS.includes(emoji)) return;
+  const profile = await requireProfile();
+  const supabase = await createClient();
+
+  const { data: existing } = await supabase
+    .from("community_reactions")
+    .select("emoji")
+    .eq("message_id", messageId)
+    .eq("profile_id", profile.id)
+    .maybeSingle();
+
+  if (existing?.emoji === emoji) {
+    await supabase
+      .from("community_reactions")
+      .delete()
+      .eq("message_id", messageId)
+      .eq("profile_id", profile.id);
+  } else {
+    // Une seule réaction par personne et par message, comme sur WhatsApp :
+    // on retire l'éventuelle réaction précédente avant d'ajouter la nouvelle.
+    await supabase
+      .from("community_reactions")
+      .delete()
+      .eq("message_id", messageId)
+      .eq("profile_id", profile.id);
+    await supabase
+      .from("community_reactions")
+      .insert({ message_id: messageId, profile_id: profile.id, emoji });
+  }
+
+  revalidatePath(`/espace-parent/communaute/${channelSlug}`);
 }

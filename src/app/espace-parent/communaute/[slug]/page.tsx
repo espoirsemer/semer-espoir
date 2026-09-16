@@ -1,14 +1,25 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Pin } from "lucide-react";
+import { Pin, Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
-import type { CommunityChannel, CommunityMessage } from "@/types/database.types";
+import type { CommunityChannel, CommunityMessage, CommunityReaction } from "@/types/database.types";
 import { MessageForm } from "./message-form";
+import { Reactions } from "./reactions";
+
+function buildReactionData(reactions: CommunityReaction[], profileId: string) {
+  const byMessage = new Map<string, { counts: Record<string, number>; mine: string | null }>();
+  for (const r of reactions) {
+    const entry = byMessage.get(r.message_id) ?? { counts: {}, mine: null };
+    entry.counts[r.emoji] = (entry.counts[r.emoji] ?? 0) + 1;
+    if (r.profile_id === profileId) entry.mine = r.emoji;
+    byMessage.set(r.message_id, entry);
+  }
+  return byMessage;
+}
 
 export default async function ChannelPage({
   params,
@@ -36,6 +47,14 @@ export default async function ChannelPage({
   const list = (messages as CommunityMessage[] | null) ?? [];
   const authorNames = await getAuthorNames(supabase, list.map((m) => m.author_id));
 
+  const { data: reactions } = list.length
+    ? await supabase
+        .from("community_reactions")
+        .select("*")
+        .in("message_id", list.map((m) => m.id))
+    : { data: [] as CommunityReaction[] };
+  const reactionData = buildReactionData((reactions as CommunityReaction[] | null) ?? [], profile.id);
+
   const topLevel = list
     .filter((m) => !m.parent_message_id)
     .sort((a, b) => Number(b.pinned) - Number(a.pinned));
@@ -48,8 +67,8 @@ export default async function ChannelPage({
     }
   }
 
-  const canPost = profile.role === "admin" || ["tier_2", "tier_3"].includes(profile.subscription_tier ?? "");
   const typedChannel = channel as CommunityChannel;
+  const canPost = profile.role === "admin" || !typedChannel.locked;
 
   return (
     <div className="space-y-6">
@@ -60,7 +79,15 @@ export default async function ChannelPage({
         >
           ← Tous les canaux
         </Link>
-        <h1 className="mt-1 text-2xl font-semibold">#{typedChannel.name}</h1>
+        <div className="mt-1 flex items-center gap-2">
+          <h1 className="text-2xl font-semibold">#{typedChannel.name}</h1>
+          {typedChannel.locked && (
+            <Badge variant="secondary" className="gap-1">
+              <Lock className="size-3" />
+              Verrouillé
+            </Badge>
+          )}
+        </div>
         {typedChannel.description && (
           <p className="text-muted-foreground">{typedChannel.description}</p>
         )}
@@ -72,55 +99,74 @@ export default async function ChannelPage({
             Aucun message pour l&apos;instant — soyez le premier à écrire.
           </p>
         )}
-        {topLevel.map((message) => (
-          <Card key={message.id}>
-            <CardContent className="space-y-3 pt-6">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">
-                  {authorNames.get(message.author_id) ?? "Un parent"}
-                </span>
-                {message.pinned && (
-                  <Badge variant="secondary" className="gap-1">
-                    <Pin className="size-3" />
-                    Épinglé
-                  </Badge>
-                )}
-                <span className="text-xs text-muted-foreground">
-                  {new Date(message.created_at).toLocaleDateString("fr-FR")}
-                </span>
-              </div>
-              <p className="text-sm whitespace-pre-wrap">{message.body}</p>
-
-              {(repliesByParent.get(message.id) ?? []).length > 0 && (
-                <div className="ml-4 space-y-3 border-l border-border/60 pl-4">
-                  {repliesByParent.get(message.id)!.map((reply) => (
-                    <div key={reply.id} className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium">
-                          {authorNames.get(reply.author_id) ?? "Un parent"}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {new Date(reply.created_at).toLocaleDateString("fr-FR")}
-                        </span>
-                      </div>
-                      <p className="text-sm whitespace-pre-wrap">{reply.body}</p>
-                    </div>
-                  ))}
+        {topLevel.map((message) => {
+          const myReaction = reactionData.get(message.id);
+          return (
+            <Card key={message.id}>
+              <CardContent className="space-y-3 pt-6">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">
+                    {authorNames.get(message.author_id) ?? "Un parent"}
+                  </span>
+                  {message.pinned && (
+                    <Badge variant="secondary" className="gap-1">
+                      <Pin className="size-3" />
+                      Épinglé
+                    </Badge>
+                  )}
+                  <span className="text-xs text-muted-foreground">
+                    {new Date(message.created_at).toLocaleDateString("fr-FR")}
+                  </span>
                 </div>
-              )}
+                <p className="text-sm whitespace-pre-wrap">{message.body}</p>
 
-              {canPost && (
-                <MessageForm
-                  channelId={typedChannel.id}
-                  channelSlug={typedChannel.slug}
-                  parentMessageId={message.id}
-                  placeholder="Répondre..."
-                  compact
+                <Reactions
+                  messageId={message.id}
+                  channelSlug={slug}
+                  counts={myReaction?.counts ?? {}}
+                  myReaction={myReaction?.mine ?? null}
                 />
-              )}
-            </CardContent>
-          </Card>
-        ))}
+
+                {(repliesByParent.get(message.id) ?? []).length > 0 && (
+                  <div className="ml-4 space-y-3 border-l border-border/60 pl-4">
+                    {repliesByParent.get(message.id)!.map((reply) => {
+                      const replyReaction = reactionData.get(reply.id);
+                      return (
+                        <div key={reply.id} className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium">
+                              {authorNames.get(reply.author_id) ?? "Un parent"}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {new Date(reply.created_at).toLocaleDateString("fr-FR")}
+                            </span>
+                          </div>
+                          <p className="text-sm whitespace-pre-wrap">{reply.body}</p>
+                          <Reactions
+                            messageId={reply.id}
+                            channelSlug={slug}
+                            counts={replyReaction?.counts ?? {}}
+                            myReaction={replyReaction?.mine ?? null}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {canPost && (
+                  <MessageForm
+                    channelId={typedChannel.id}
+                    channelSlug={typedChannel.slug}
+                    parentMessageId={message.id}
+                    placeholder="Répondre..."
+                    compact
+                  />
+                )}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {canPost ? (
@@ -131,14 +177,10 @@ export default async function ChannelPage({
         </Card>
       ) : (
         <Card>
-          <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-6">
-            <p className="text-sm text-muted-foreground">
-              Votre formule permet de lire ce canal. Passez à Guidance ou VIP
-              pour participer aux discussions.
-            </p>
-            <Link href="/#tarifs" className={buttonVariants({ size: "sm" })}>
-              Voir les formules
-            </Link>
+          <CardContent className="flex items-center gap-2 pt-6 text-sm text-muted-foreground">
+            <Lock className="size-4" />
+            La spécialiste a temporairement limité l&apos;envoi de messages
+            dans ce canal.
           </CardContent>
         </Card>
       )}

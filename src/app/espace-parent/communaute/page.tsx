@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Hash } from "lucide-react";
+import { Hash, Lock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 import type { CommunityChannel } from "@/types/database.types";
@@ -40,6 +41,12 @@ export default async function CommunautePage() {
                   <div className="flex items-center gap-2">
                     <Hash className="size-4 text-amber-600 dark:text-amber-400" />
                     <CardTitle>{channel.name}</CardTitle>
+                    {channel.locked && (
+                      <Badge variant="secondary" className="gap-1">
+                        <Lock className="size-3" />
+                        Verrouillé
+                      </Badge>
+                    )}
                   </div>
                   {channel.description && (
                     <CardDescription>{channel.description}</CardDescription>

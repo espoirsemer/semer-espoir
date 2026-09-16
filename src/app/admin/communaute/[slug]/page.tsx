@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
 import type { CommunityChannel, CommunityMessage } from "@/types/database.types";
 import { ModerationButtons } from "./moderation-buttons";
+import { LockToggle } from "./lock-toggle";
 
 export default async function AdminChannelPage({
   params,
@@ -35,14 +36,24 @@ export default async function AdminChannelPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link
-          href="/admin/communaute"
-          className="text-sm text-muted-foreground hover:text-foreground"
-        >
-          ← Tous les canaux
-        </Link>
-        <h1 className="mt-1 text-2xl font-semibold">#{typedChannel.name}</h1>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <Link
+            href="/admin/communaute"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            ← Tous les canaux
+          </Link>
+          <div className="mt-1 flex items-center gap-2">
+            <h1 className="text-2xl font-semibold">#{typedChannel.name}</h1>
+            {typedChannel.locked && <Badge variant="secondary">Verrouillé</Badge>}
+          </div>
+        </div>
+        <LockToggle
+          channelId={typedChannel.id}
+          locked={typedChannel.locked}
+          slug={slug}
+        />
       </div>
 
       <div className="space-y-3">

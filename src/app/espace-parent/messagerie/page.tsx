@@ -1,94 +1,107 @@
 import Link from "next/link";
-import { UserRound } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
-import type { DirectConversation, DirectMessage } from "@/types/database.types";
-import { NewConversation } from "./new-conversation";
+import type { SpecialistMessage } from "@/types/database.types";
+import { MessageForm } from "./message-form";
 
-export default async function MessagerieePage() {
+export default async function MessagerieSpecialistePage() {
   const profile = await requireProfile();
   const supabase = await createClient();
 
-  const { data: conversations } = await supabase
-    .from("direct_conversations")
-    .select("*")
-    .or(`parent_a_id.eq.${profile.id},parent_b_id.eq.${profile.id}`)
-    .order("created_at", { ascending: false });
+  const { data: bookings } = await supabase
+    .from("consultation_bookings")
+    .select("id")
+    .eq("parent_id", profile.id)
+    .limit(1);
 
-  const convList = (conversations as DirectConversation[] | null) ?? [];
-  const otherIds = convList.map((c) =>
-    c.parent_a_id === profile.id ? c.parent_b_id : c.parent_a_id,
-  );
-  const names = await getAuthorNames(supabase, otherIds);
+  const hasBooking = (bookings?.length ?? 0) > 0;
 
-  const lastMessages = new Map<string, DirectMessage>();
-  if (convList.length > 0) {
-    const { data: messages } = await supabase
-      .from("direct_messages")
-      .select("*")
-      .in("conversation_id", convList.map((c) => c.id))
-      .order("created_at", { ascending: false });
-
-    for (const m of (messages as DirectMessage[] | null) ?? []) {
-      if (!lastMessages.has(m.conversation_id)) {
-        lastMessages.set(m.conversation_id, m);
-      }
-    }
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+  if (!hasBooking) {
+    return (
+      <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-semibold">Messagerie</h1>
           <p className="text-muted-foreground">
-            Échangez en privé avec d&apos;autres parents.
+            Échangez directement avec la spécialiste.
           </p>
         </div>
-        <NewConversation />
-      </div>
-
-      {convList.length === 0 ? (
         <Card>
           <CardHeader>
-            <CardTitle>Aucune conversation pour l&apos;instant</CardTitle>
+            <CardTitle>Réservez d&apos;abord un rendez-vous</CardTitle>
             <CardDescription>
-              Démarrez une conversation avec un autre parent pour échanger en
-              privé.
+              La messagerie avec la spécialiste s&apos;ouvre une fois que vous
+              avez réservé une consultation.
             </CardDescription>
           </CardHeader>
+          <CardContent>
+            <Link
+              href="/espace-parent/consultations"
+              className={buttonVariants({ variant: "outline" })}
+            >
+              Réserver une consultation
+            </Link>
+          </CardContent>
         </Card>
-      ) : (
-        <div className="divide-y divide-border/60 rounded-lg border border-border/60 bg-background">
-          {convList.map((conv) => {
-            const otherId =
-              conv.parent_a_id === profile.id ? conv.parent_b_id : conv.parent_a_id;
-            const last = lastMessages.get(conv.id);
-            return (
-              <Link
-                key={conv.id}
-                href={`/espace-parent/messagerie/${conv.id}`}
-                className="flex items-center gap-3 px-4 py-3 hover:bg-accent"
+      </div>
+    );
+  }
+
+  const { data: messages } = await supabase
+    .from("specialist_messages")
+    .select("*")
+    .eq("parent_id", profile.id)
+    .order("created_at");
+
+  const messageList = (messages as SpecialistMessage[] | null) ?? [];
+  const adminIds = [...new Set(messageList.filter((m) => m.sender_id !== profile.id).map((m) => m.sender_id))];
+  const names = await getAuthorNames(supabase, adminIds);
+
+  return (
+    <div className="flex h-full flex-col space-y-6">
+      <div>
+        <h1 className="text-2xl font-semibold">Messagerie</h1>
+        <p className="text-muted-foreground">Échangez directement avec la spécialiste.</p>
+      </div>
+
+      <div className="flex-1 space-y-3 rounded-lg border border-border/60 bg-background p-4">
+        {messageList.length === 0 && (
+          <p className="text-sm text-muted-foreground">
+            Aucun message pour l&apos;instant — écrivez le premier.
+          </p>
+        )}
+        {messageList.map((message) => {
+          const isMine = message.sender_id === profile.id;
+          return (
+            <div key={message.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
+              <div
+                className={`max-w-sm rounded-2xl px-4 py-2 text-sm ${
+                  isMine ? "bg-amber-600 text-white" : "bg-muted text-foreground"
+                }`}
               >
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                  <UserRound className="size-4" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium">{names.get(otherId) ?? "Parent"}</p>
-                  {last && (
-                    <p className="truncate text-sm text-muted-foreground">
-                      {last.sender_id === profile.id ? "Vous : " : ""}
-                      {last.body}
-                    </p>
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+                {!isMine && (
+                  <p className="mb-0.5 text-xs font-medium text-amber-700 dark:text-amber-400">
+                    {names.get(message.sender_id) ?? "La spécialiste"}
+                  </p>
+                )}
+                <p className="whitespace-pre-wrap">{message.body}</p>
+                <p className={`mt-1 text-xs ${isMine ? "text-amber-100" : "text-muted-foreground"}`}>
+                  {new Date(message.created_at).toLocaleString("fr-FR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <MessageForm />
     </div>
   );
 }

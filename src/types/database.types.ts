@@ -52,6 +52,7 @@ export interface CommunityChannel {
   name: string;
   slug: string;
   description: string | null;
+  locked: boolean;
   created_at: string;
 }
 
@@ -63,6 +64,12 @@ export interface CommunityMessage {
   body: string;
   pinned: boolean;
   created_at: string;
+}
+
+export interface CommunityReaction {
+  message_id: string;
+  profile_id: string;
+  emoji: string;
 }
 
 export interface JournalEntry {
@@ -84,20 +91,12 @@ export interface SubscriptionPlan {
   updated_at: string;
 }
 
-export interface DirectConversation {
+export interface SpecialistMessage {
   id: string;
-  parent_a_id: string;
-  parent_b_id: string;
-  created_at: string;
-}
-
-export interface DirectMessage {
-  id: string;
-  conversation_id: string;
+  parent_id: string;
   sender_id: string;
   body: string;
   created_at: string;
-  read_at: string | null;
 }
 
 export interface ConsultationSlot {

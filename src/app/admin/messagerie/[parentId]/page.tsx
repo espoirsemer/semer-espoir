@@ -1,52 +1,47 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
-import type { DirectConversation, DirectMessage } from "@/types/database.types";
-import { MessageThreadForm } from "../message-thread-form";
+import type { SpecialistMessage } from "@/types/database.types";
+import { ReplyForm } from "../reply-form";
 
-export default async function ConversationPage({
+export default async function AdminConversationPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ parentId: string }>;
 }) {
-  const { id } = await params;
-  const profile = await requireProfile();
+  const { parentId } = await params;
   const supabase = await createClient();
 
-  const { data: conversation } = await supabase
-    .from("direct_conversations")
-    .select("*")
-    .eq("id", id)
+  const { data: parentProfile } = await supabase
+    .from("profiles")
+    .select("id, full_name")
+    .eq("id", parentId)
     .single();
 
-  if (!conversation) notFound();
-
-  const typedConv = conversation as DirectConversation;
-  const otherId =
-    typedConv.parent_a_id === profile.id ? typedConv.parent_b_id : typedConv.parent_a_id;
-  const names = await getAuthorNames(supabase, [otherId]);
+  if (!parentProfile) notFound();
 
   const { data: messages } = await supabase
-    .from("direct_messages")
+    .from("specialist_messages")
     .select("*")
-    .eq("conversation_id", id)
+    .eq("parent_id", parentId)
     .order("created_at");
 
-  const messageList = (messages as DirectMessage[] | null) ?? [];
+  const messageList = (messages as SpecialistMessage[] | null) ?? [];
+  const adminIds = [...new Set(messageList.filter((m) => m.sender_id !== parentId).map((m) => m.sender_id))];
+  const names = await getAuthorNames(supabase, adminIds);
 
   return (
     <div className="flex h-full flex-col space-y-6">
       <div>
         <Link
-          href="/espace-parent/messagerie"
+          href="/admin/messagerie"
           className="text-sm text-muted-foreground hover:text-foreground"
         >
           ← Toutes les conversations
         </Link>
         <h1 className="mt-1 text-2xl font-semibold">
-          {names.get(otherId) ?? "Parent"}
+          {parentProfile.full_name ?? "Parent"}
         </h1>
       </div>
 
@@ -57,23 +52,21 @@ export default async function ConversationPage({
           </p>
         )}
         {messageList.map((message) => {
-          const isMine = message.sender_id === profile.id;
+          const isMine = message.sender_id !== parentId;
           return (
-            <div
-              key={message.id}
-              className={`flex ${isMine ? "justify-end" : "justify-start"}`}
-            >
+            <div key={message.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
               <div
                 className={`max-w-sm rounded-2xl px-4 py-2 text-sm ${
-                  isMine
-                    ? "bg-amber-600 text-white"
-                    : "bg-muted text-foreground"
+                  isMine ? "bg-amber-600 text-white" : "bg-muted text-foreground"
                 }`}
               >
+                {isMine && (
+                  <p className="mb-0.5 text-xs font-medium text-amber-100">
+                    {names.get(message.sender_id) ?? "Vous"}
+                  </p>
+                )}
                 <p className="whitespace-pre-wrap">{message.body}</p>
-                <p
-                  className={`mt-1 text-xs ${isMine ? "text-amber-100" : "text-muted-foreground"}`}
-                >
+                <p className={`mt-1 text-xs ${isMine ? "text-amber-100" : "text-muted-foreground"}`}>
                   {new Date(message.created_at).toLocaleString("fr-FR", {
                     day: "2-digit",
                     month: "2-digit",
@@ -87,7 +80,7 @@ export default async function ConversationPage({
         })}
       </div>
 
-      <MessageThreadForm conversationId={id} />
+      <ReplyForm parentId={parentId} />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { CommunityMessage } from "@/types/database.types";
 import { ReplyToggle } from "./reply-toggle";
 import { Reactions } from "./reactions";
+import { Attachment } from "./attachment";
 
 export function ChatMessage({
   message,
@@ -16,6 +17,7 @@ export function ChatMessage({
   canReply = false,
   moderation,
   indent = false,
+  attachmentUrl,
 }: {
   message: CommunityMessage;
   isOwn: boolean;
@@ -27,11 +29,13 @@ export function ChatMessage({
   canReply?: boolean;
   moderation?: ReactNode;
   indent?: boolean;
+  attachmentUrl?: string | null;
 }) {
-  // La spécialiste s'affiche toujours du côté opposé aux parents (comme un
-  // agent dans un chat de support), pour qu'on la repère d'un coup d'œil
-  // même au milieu d'une conversation à plusieurs parents.
-  const side = isSpecialist ? "right" : "left";
+  // Comme sur WhatsApp : chacun voit ses propres messages à droite, dans une
+  // couleur qui lui est propre, et ceux des autres à gauche. Les messages de
+  // la spécialiste gardent en plus une couleur et une mention dédiées côté
+  // parents, pour qu'on la repère au milieu d'une conversation à plusieurs.
+  const side = isOwn ? "right" : "left";
 
   return (
     <div
@@ -53,15 +57,24 @@ export function ChatMessage({
       <div
         className={cn(
           "relative max-w-[80%] rounded-2xl px-3.5 py-2 text-sm shadow-sm",
-          isSpecialist && "rounded-br-sm bg-emerald-600 text-white",
-          !isSpecialist && isOwn && "rounded-bl-sm bg-amber-100 text-foreground dark:bg-amber-950/40",
-          !isSpecialist && !isOwn && "rounded-bl-sm bg-muted text-foreground",
+          isOwn && "rounded-br-sm bg-amber-500 text-white",
+          !isOwn && isSpecialist && "rounded-bl-sm bg-emerald-600 text-white",
+          !isOwn && !isSpecialist && "rounded-bl-sm bg-muted text-foreground",
         )}
       >
         {message.pinned && (
           <Pin className="absolute -top-2 -right-2 size-4 rounded-full border border-border/60 bg-background p-0.5 text-amber-600" />
         )}
-        <p className="whitespace-pre-wrap break-words">{message.body}</p>
+        {attachmentUrl && message.attachment_type && (
+          <div className="mb-1.5">
+            <Attachment
+              url={attachmentUrl}
+              type={message.attachment_type}
+              name={message.attachment_name}
+            />
+          </div>
+        )}
+        {message.body && <p className="whitespace-pre-wrap break-words">{message.body}</p>}
         <span className="mt-1 block text-right text-[10px] opacity-70">
           {new Date(message.created_at).toLocaleTimeString("fr-FR", {
             hour: "2-digit",

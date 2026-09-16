@@ -56,6 +56,8 @@ export interface CommunityChannel {
   created_at: string;
 }
 
+export type CommunityAttachmentType = "image" | "pdf" | "audio" | "video";
+
 export interface CommunityMessage {
   id: string;
   channel_id: string;
@@ -64,6 +66,9 @@ export interface CommunityMessage {
   body: string;
   pinned: boolean;
   created_at: string;
+  attachment_path: string | null;
+  attachment_type: CommunityAttachmentType | null;
+  attachment_name: string | null;
 }
 
 export interface CommunityReaction {

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorProfiles } from "@/lib/get-author-profiles";
+import { getSignedAttachmentUrls } from "@/lib/get-signed-attachment-urls";
 import type { CommunityChannel, CommunityMessage, CommunityReaction } from "@/types/database.types";
 import { MessageForm } from "@/components/community/message-form";
 import { ChatMessage } from "@/components/community/chat-message";
@@ -56,6 +57,11 @@ export default async function AdminChannelPage({
         .in("message_id", list.map((m) => m.id))
     : { data: [] as CommunityReaction[] };
   const reactionData = buildReactionData((reactions as CommunityReaction[] | null) ?? [], admin.id);
+
+  const attachmentPaths = list
+    .map((m) => m.attachment_path)
+    .filter((p): p is string => !!p);
+  const attachmentUrls = await getSignedAttachmentUrls(attachmentPaths);
 
   const typedChannel = channel as CommunityChannel;
 
@@ -118,6 +124,7 @@ export default async function AdminChannelPage({
                 moderation={
                   <ModerationButtons messageId={message.id} pinned={message.pinned} slug={slug} />
                 }
+                attachmentUrl={message.attachment_path ? attachmentUrls.get(message.attachment_path) : null}
               />
               {(repliesByParent.get(message.id) ?? []).map((reply) => {
                 const replyAuthor = authorProfiles.get(reply.author_id);
@@ -136,6 +143,7 @@ export default async function AdminChannelPage({
                     moderation={
                       <ModerationButtons messageId={reply.id} pinned={reply.pinned} slug={slug} />
                     }
+                    attachmentUrl={reply.attachment_path ? attachmentUrls.get(reply.attachment_path) : null}
                   />
                 );
               })}

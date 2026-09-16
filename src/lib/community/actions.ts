@@ -2,8 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { requireProfile } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { QUICK_EMOJIS } from "./emojis";
+import type { CommunityAttachmentType } from "@/types/database.types";
+
+const MAX_ATTACHMENT_BYTES = 25 * 1024 * 1024;
+
+function attachmentTypeFor(mimeType: string): CommunityAttachmentType | null {
+  if (mimeType.startsWith("image/")) return "image";
+  if (mimeType.startsWith("audio/")) return "audio";
+  if (mimeType.startsWith("video/")) return "video";
+  if (mimeType === "application/pdf") return "pdf";
+  return null;
+}
 
 export async function postMessage(_prevState: string | null, formData: FormData) {
   const profile = await requireProfile();
@@ -12,9 +23,42 @@ export async function postMessage(_prevState: string | null, formData: FormData)
   const channelSlug = formData.get("channel_slug") as string;
   const body = (formData.get("body") as string).trim();
   const parentMessageId = (formData.get("parent_message_id") as string) || null;
+  const file = formData.get("attachment") as File | null;
+  const hasFile = file && file.size > 0;
 
-  if (!body) {
-    return "Écrivez un message avant d'envoyer.";
+  if (!body && !hasFile) {
+    return "Écrivez un message ou joignez un fichier avant d'envoyer.";
+  }
+
+  let attachmentPath: string | null = null;
+  let attachmentType: CommunityAttachmentType | null = null;
+  let attachmentName: string | null = null;
+
+  if (hasFile) {
+    if (file.size > MAX_ATTACHMENT_BYTES) {
+      return "Le fichier dépasse la taille maximale (25 Mo).";
+    }
+    const type = attachmentTypeFor(file.type);
+    if (!type) {
+      return "Format de fichier non pris en charge (photo, PDF, audio ou vidéo uniquement).";
+    }
+
+    // Le bucket "communaute" est privé et n'a pas de politique RLS dédiée :
+    // on passe par le client service role pour l'upload, jamais exposé au client.
+    const admin = createAdminClient();
+    const ext = file.name.includes(".") ? file.name.split(".").pop() : null;
+    const path = `${channelId}/${crypto.randomUUID()}${ext ? `.${ext}` : ""}`;
+    const { error: uploadError } = await admin.storage
+      .from("communaute")
+      .upload(path, file, { contentType: file.type });
+
+    if (uploadError) {
+      return `Échec de l'envoi du fichier : ${uploadError.message}`;
+    }
+
+    attachmentPath = path;
+    attachmentType = type;
+    attachmentName = file.name;
   }
 
   const supabase = await createClient();
@@ -23,6 +67,9 @@ export async function postMessage(_prevState: string | null, formData: FormData)
     author_id: profile.id,
     parent_message_id: parentMessageId,
     body,
+    attachment_path: attachmentPath,
+    attachment_type: attachmentType,
+    attachment_name: attachmentName,
   });
 
   if (error) {

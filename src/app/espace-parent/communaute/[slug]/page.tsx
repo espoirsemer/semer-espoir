@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorProfiles } from "@/lib/get-author-profiles";
+import { getSignedAttachmentUrls } from "@/lib/get-signed-attachment-urls";
 import type { CommunityChannel, CommunityMessage, CommunityReaction } from "@/types/database.types";
 import { MessageForm } from "@/components/community/message-form";
 import { ChatMessage } from "@/components/community/chat-message";
@@ -55,6 +56,11 @@ export default async function ChannelPage({
         .in("message_id", list.map((m) => m.id))
     : { data: [] as CommunityReaction[] };
   const reactionData = buildReactionData((reactions as CommunityReaction[] | null) ?? [], profile.id);
+
+  const attachmentPaths = list
+    .map((m) => m.attachment_path)
+    .filter((p): p is string => !!p);
+  const attachmentUrls = await getSignedAttachmentUrls(attachmentPaths);
 
   const topLevel = list
     .filter((m) => !m.parent_message_id)
@@ -117,6 +123,7 @@ export default async function ChannelPage({
                 reactionCounts={reaction?.counts ?? {}}
                 myReaction={reaction?.mine ?? null}
                 canReply={canPost}
+                attachmentUrl={message.attachment_path ? attachmentUrls.get(message.attachment_path) : null}
               />
               {(repliesByParent.get(message.id) ?? []).map((reply) => {
                 const replyAuthor = authorProfiles.get(reply.author_id);
@@ -132,6 +139,7 @@ export default async function ChannelPage({
                     reactionCounts={replyReaction?.counts ?? {}}
                     myReaction={replyReaction?.mine ?? null}
                     indent
+                    attachmentUrl={reply.attachment_path ? attachmentUrls.get(reply.attachment_path) : null}
                   />
                 );
               })}

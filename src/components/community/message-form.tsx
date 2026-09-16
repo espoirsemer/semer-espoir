@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useRef, useEffect } from "react";
-import { SendHorizontal } from "lucide-react";
+import { useActionState, useRef, useEffect, useState } from "react";
+import { SendHorizontal, Paperclip, X } from "lucide-react";
 import { postMessage } from "@/lib/community/actions";
 
 export function MessageForm({
@@ -19,6 +19,8 @@ export function MessageForm({
 }) {
   const [state, formAction, isPending] = useActionState(postMessage, null);
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
 
   useEffect(() => {
     if (state === "success") {
@@ -26,19 +28,62 @@ export function MessageForm({
     }
   }, [state]);
 
+  function clearFile() {
+    setFileName(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  const buttonSize = compact ? 34 : 40;
+
   return (
-    <form ref={formRef} action={formAction} className="space-y-1.5">
+    <form
+      ref={formRef}
+      action={formAction}
+      onReset={() => setFileName(null)}
+      className="space-y-1.5"
+    >
       <input type="hidden" name="channel_id" value={channelId} />
       <input type="hidden" name="channel_slug" value={channelSlug} />
       {parentMessageId && (
         <input type="hidden" name="parent_message_id" value={parentMessageId} />
       )}
+
+      {fileName && (
+        <div className="flex w-fit items-center gap-2 rounded-full border border-border/60 bg-muted px-3 py-1 text-xs">
+          <span className="max-w-[200px] truncate">{fileName}</span>
+          <button
+            type="button"
+            onClick={clearFile}
+            aria-label="Retirer la pièce jointe"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <X className="size-3" />
+          </button>
+        </div>
+      )}
+
       <div className="flex items-end gap-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          name="attachment"
+          accept="image/*,application/pdf,audio/*,video/*"
+          className="hidden"
+          onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          aria-label="Joindre un fichier"
+          className="flex shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+          style={{ width: buttonSize, height: buttonSize }}
+        >
+          <Paperclip className={compact ? "size-4" : "size-4.5"} />
+        </button>
         <textarea
           name="body"
           placeholder={placeholder}
           rows={1}
-          required
           className="max-h-32 flex-1 resize-none rounded-3xl border border-border/60 bg-background px-4 py-2.5 text-sm shadow-sm outline-none focus:border-amber-400"
         />
         <button
@@ -46,7 +91,7 @@ export function MessageForm({
           disabled={isPending}
           aria-label="Envoyer"
           className="flex shrink-0 items-center justify-center rounded-full bg-amber-500 text-white transition-colors hover:bg-amber-600 disabled:opacity-60"
-          style={{ width: compact ? 34 : 40, height: compact ? 34 : 40 }}
+          style={{ width: buttonSize, height: buttonSize }}
         >
           <SendHorizontal className={compact ? "size-4" : "size-4.5"} />
         </button>

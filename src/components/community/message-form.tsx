@@ -1,8 +1,11 @@
 "use client";
 
 import { useActionState, useRef, useEffect, useState } from "react";
-import { SendHorizontal, Paperclip, X } from "lucide-react";
+import { SendHorizontal, X } from "lucide-react";
 import { postMessage } from "@/lib/community/actions";
+import { AttachmentMenu } from "./attachment-menu";
+import { CameraCaptureDialog } from "./camera-capture-dialog";
+import { VoiceRecorderButton } from "./voice-recorder-button";
 
 export function MessageForm({
   channelId,
@@ -21,12 +24,20 @@ export function MessageForm({
   const formRef = useRef<HTMLFormElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
+  const [cameraOpen, setCameraOpen] = useState(false);
 
   useEffect(() => {
     if (state === "success") {
       formRef.current?.reset();
     }
   }, [state]);
+
+  function setAttachedFile(file: File) {
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    if (fileInputRef.current) fileInputRef.current.files = transfer.files;
+    setFileName(file.name);
+  }
 
   function clearFile() {
     setFileName(null);
@@ -47,6 +58,7 @@ export function MessageForm({
       {parentMessageId && (
         <input type="hidden" name="parent_message_id" value={parentMessageId} />
       )}
+      <input ref={fileInputRef} type="file" name="attachment" className="hidden" />
 
       {fileName && (
         <div className="flex w-fit items-center gap-2 rounded-full border border-border/60 bg-muted px-3 py-1 text-xs">
@@ -63,29 +75,18 @@ export function MessageForm({
       )}
 
       <div className="flex items-end gap-2">
-        <input
-          ref={fileInputRef}
-          type="file"
-          name="attachment"
-          accept="image/*,application/pdf,audio/*,video/*"
-          className="hidden"
-          onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+        <AttachmentMenu
+          onFileSelected={setAttachedFile}
+          onOpenCamera={() => setCameraOpen(true)}
+          size={buttonSize}
         />
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          aria-label="Joindre un fichier"
-          className="flex shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-          style={{ width: buttonSize, height: buttonSize }}
-        >
-          <Paperclip className={compact ? "size-4" : "size-4.5"} />
-        </button>
         <textarea
           name="body"
           placeholder={placeholder}
           rows={1}
           className="max-h-32 flex-1 resize-none rounded-3xl border border-border/60 bg-background px-4 py-2.5 text-sm shadow-sm outline-none focus:border-amber-400"
         />
+        <VoiceRecorderButton onRecorded={setAttachedFile} size={buttonSize} />
         <button
           type="submit"
           disabled={isPending}
@@ -98,6 +99,16 @@ export function MessageForm({
       </div>
       {state && state !== "success" && (
         <p className="px-2 text-xs text-destructive">{state}</p>
+      )}
+
+      {cameraOpen && (
+        <CameraCaptureDialog
+          onCapture={(file) => {
+            setAttachedFile(file);
+            setCameraOpen(false);
+          }}
+          onClose={() => setCameraOpen(false)}
+        />
       )}
     </form>
   );

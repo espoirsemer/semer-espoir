@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { Pin, PinOff, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { togglePin, deleteMessage } from "../actions";
+import { togglePin, deleteMessage } from "@/app/admin/communaute/actions";
 
 export function ModerationButtons({
   messageId,

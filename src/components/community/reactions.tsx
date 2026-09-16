@@ -3,8 +3,8 @@
 import { useState, useTransition } from "react";
 import { SmilePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toggleReaction } from "./actions";
-import { QUICK_EMOJIS } from "./emojis";
+import { toggleReaction } from "@/lib/community/actions";
+import { QUICK_EMOJIS } from "@/lib/community/emojis";
 
 export function Reactions({
   messageId,
@@ -28,7 +28,7 @@ export function Reactions({
   const activeEmojis = Object.entries(counts).filter(([, n]) => n > 0);
 
   return (
-    <div className="relative flex flex-wrap items-center gap-1 pt-1">
+    <div className="relative flex flex-wrap items-center gap-1">
       {activeEmojis.map(([emoji, count]) => (
         <button
           key={emoji}
@@ -38,7 +38,7 @@ export function Reactions({
             "flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors",
             myReaction === emoji
               ? "border-amber-400 bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50"
-              : "border-border/60 bg-muted hover:bg-accent",
+              : "border-border/60 bg-background hover:bg-accent",
           )}
         >
           {emoji} {count}

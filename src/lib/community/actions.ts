@@ -27,12 +27,13 @@ export async function postMessage(_prevState: string | null, formData: FormData)
 
   if (error) {
     if (error.code === "42501" || error.message.includes("row-level security")) {
-      return "La spécialiste a temporairement limité l'envoi de messages dans ce canal.";
+      return "La spécialiste a verrouillé ce canal : seuls les administrateurs peuvent écrire pour l'instant.";
     }
     return error.message;
   }
 
   revalidatePath(`/espace-parent/communaute/${channelSlug}`);
+  revalidatePath(`/admin/communaute/${channelSlug}`);
   return "success";
 }
 
@@ -68,4 +69,5 @@ export async function toggleReaction(messageId: string, emoji: string, channelSl
   }
 
   revalidatePath(`/espace-parent/communaute/${channelSlug}`);
+  revalidatePath(`/admin/communaute/${channelSlug}`);
 }

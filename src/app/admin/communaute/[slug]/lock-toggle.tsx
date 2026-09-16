@@ -21,7 +21,7 @@ export function LockToggle({
       variant={locked ? "default" : "outline"}
       size="sm"
       disabled={isPending}
-      onClick={() => startTransition(() => toggleChannelLock(channelId, locked, slug))}
+      onClick={() => startTransition(() => toggleChannelLock(channelId, slug))}
     >
       {locked ? <Unlock className="size-4" /> : <Lock className="size-4" />}
       {locked ? "Déverrouiller le canal" : "Verrouiller le canal"}

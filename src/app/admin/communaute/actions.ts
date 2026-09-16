@@ -53,10 +53,21 @@ export async function deleteMessage(messageId: string, slug: string) {
   revalidatePath(`/espace-parent/communaute/${slug}`);
 }
 
-export async function toggleChannelLock(channelId: string, locked: boolean, slug: string) {
+export async function toggleChannelLock(channelId: string, slug: string) {
   await requireAdmin();
   const supabase = await createClient();
-  await supabase.from("community_channels").update({ locked: !locked }).eq("id", channelId);
+  // On relit l'état actuel depuis la base plutôt que de faire confiance à la
+  // valeur passée par le client, pour éviter d'inverser le verrouillage sur
+  // une valeur obsolète (onglet resté ouvert, double clic, etc.).
+  const { data: current } = await supabase
+    .from("community_channels")
+    .select("locked")
+    .eq("id", channelId)
+    .single();
+  await supabase
+    .from("community_channels")
+    .update({ locked: !current?.locked })
+    .eq("id", channelId);
   revalidatePath(`/admin/communaute/${slug}`);
   revalidatePath("/admin/communaute");
   revalidatePath(`/espace-parent/communaute/${slug}`);

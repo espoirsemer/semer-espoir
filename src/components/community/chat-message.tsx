@@ -28,32 +28,34 @@ export function ChatMessage({
   moderation?: ReactNode;
   indent?: boolean;
 }) {
+  // La spécialiste s'affiche toujours du côté opposé aux parents (comme un
+  // agent dans un chat de support), pour qu'on la repère d'un coup d'œil
+  // même au milieu d'une conversation à plusieurs parents.
+  const side = isSpecialist ? "right" : "left";
+
   return (
     <div
       className={cn(
         "flex flex-col gap-1",
-        isOwn ? "items-end" : "items-start",
-        indent && "ml-6",
+        side === "right" ? "items-end" : "items-start",
+        indent && (side === "right" ? "mr-6" : "ml-6"),
       )}
     >
-      {!isOwn && (
-        <span
-          className={cn(
-            "px-1 text-xs font-medium",
-            isSpecialist ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
-          )}
-        >
-          {authorName}
-          {isSpecialist && " · Spécialiste"}
-        </span>
-      )}
+      <span
+        className={cn(
+          "px-1 text-xs font-medium",
+          isSpecialist ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
+        )}
+      >
+        {isSpecialist ? `Spécialiste · ${authorName}` : authorName}
+      </span>
 
       <div
         className={cn(
           "relative max-w-[80%] rounded-2xl px-3.5 py-2 text-sm shadow-sm",
-          isOwn && "rounded-br-sm bg-amber-500 text-white",
-          !isOwn && isSpecialist && "rounded-bl-sm bg-emerald-600 text-white",
-          !isOwn && !isSpecialist && "rounded-bl-sm bg-muted text-foreground",
+          isSpecialist && "rounded-br-sm bg-emerald-600 text-white",
+          !isSpecialist && isOwn && "rounded-bl-sm bg-amber-100 text-foreground dark:bg-amber-950/40",
+          !isSpecialist && !isOwn && "rounded-bl-sm bg-muted text-foreground",
         )}
       >
         {message.pinned && (

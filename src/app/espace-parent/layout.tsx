@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { CommunityNotifier } from "@/components/community/community-notifier";
 import { requireProfile } from "@/lib/auth";
 
 const PARENT_NAV = [
@@ -36,6 +37,7 @@ export default async function EspaceParentLayout({
 
   return (
     <div className="flex flex-1">
+      <CommunityNotifier profileId={profile.id} />
       <AppSidebar
         title="Espace parent"
         items={navItems}

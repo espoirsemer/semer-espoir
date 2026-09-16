@@ -1,5 +1,6 @@
 import { BarChart3, Tag, PlayCircle, ShieldCheck, Users, CalendarClock, Video, MessageCircle, Home } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { CommunityNotifier } from "@/components/community/community-notifier";
 import { requireAdmin } from "@/lib/auth";
 
 const ADMIN_NAV = [
@@ -23,6 +24,7 @@ export default async function AdminLayout({
 
   return (
     <div className="flex flex-1">
+      <CommunityNotifier profileId={profile.id} />
       <AppSidebar
         title="Panel Admin"
         items={ADMIN_NAV}

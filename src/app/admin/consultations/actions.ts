@@ -37,3 +37,11 @@ export async function deleteSlot(slotId: string) {
   revalidatePath("/admin/consultations");
   revalidatePath("/espace-parent/consultations");
 }
+
+export async function approveBooking(bookingId: string) {
+  await requireAdmin();
+  const supabase = await createClient();
+  await supabase.from("consultation_bookings").update({ status: "confirmed" }).eq("id", bookingId);
+  revalidatePath("/admin/consultations");
+  revalidatePath("/espace-parent/consultations");
+}

@@ -111,13 +111,17 @@ export interface ConsultationSlot {
   created_at: string;
 }
 
+export type ConsultationBookingStatus = "pending" | "confirmed";
+
 export interface ConsultationBooking {
   id: string;
   slot_id: string;
   parent_id: string;
   child_id: string | null;
   notes: string | null;
+  status: ConsultationBookingStatus;
   created_at: string;
+  updated_at: string;
 }
 
 export interface LiveSession {

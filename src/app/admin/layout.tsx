@@ -1,6 +1,7 @@
-import { BarChart3, Tag, PlayCircle, ShieldCheck, Users, CalendarClock, Video, MessageCircle, Home } from "lucide-react";
+import { BarChart3, Tag, PlayCircle, ShieldCheck, Users, CalendarClock, Video, Home } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { CommunityNotifier } from "@/components/community/community-notifier";
+import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
 import { requireAdmin } from "@/lib/auth";
 
 const ADMIN_NAV = [
@@ -8,7 +9,6 @@ const ADMIN_NAV = [
   { href: "/admin/tarifs", label: "Tarifs", icon: <Tag /> },
   { href: "/admin/contenus", label: "Contenus", icon: <PlayCircle /> },
   { href: "/admin/communaute", label: "Modération", icon: <ShieldCheck /> },
-  { href: "/admin/messagerie", label: "Messagerie", icon: <MessageCircle /> },
   { href: "/admin/lives", label: "Lives Q&A", icon: <Video /> },
   { href: "/admin/consultations", label: "Consultations", icon: <CalendarClock /> },
   { href: "/admin/abonnes", label: "Abonnés", icon: <Users /> },
@@ -25,6 +25,7 @@ export default async function AdminLayout({
   return (
     <div className="flex h-screen overflow-hidden">
       <CommunityNotifier profileId={profile.id} />
+      <ConsultationNotifier profileId={profile.id} role="admin" />
       <AppSidebar
         title="Panel Admin"
         items={ADMIN_NAV}

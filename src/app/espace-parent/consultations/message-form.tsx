@@ -3,7 +3,7 @@
 import { useActionState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { sendMessageToSpecialist } from "./actions";
+import { sendMessageToSpecialist } from "@/lib/consultations/messagerie-actions";
 
 export function MessageForm() {
   const [state, formAction, isPending] = useActionState(sendMessageToSpecialist, null);
@@ -16,7 +16,7 @@ export function MessageForm() {
   }, [state]);
 
   return (
-    <form ref={formRef} action={formAction} className="flex gap-2">
+    <form ref={formRef} action={formAction} className="flex shrink-0 gap-2">
       <Textarea name="body" placeholder="Écrivez votre message à la spécialiste…" rows={2} required />
       <Button type="submit" disabled={isPending} className="self-end">
         {isPending ? "Envoi..." : "Envoyer"}

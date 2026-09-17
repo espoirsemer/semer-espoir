@@ -3,7 +3,7 @@
 import { useActionState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { replyToParent } from "./actions";
+import { replyToParent } from "@/lib/consultations/messagerie-actions";
 
 export function ReplyForm({ parentId }: { parentId: string }) {
   const [state, formAction, isPending] = useActionState(replyToParent, null);
@@ -16,7 +16,7 @@ export function ReplyForm({ parentId }: { parentId: string }) {
   }, [state]);
 
   return (
-    <form ref={formRef} action={formAction} className="flex gap-2">
+    <form ref={formRef} action={formAction} className="flex shrink-0 gap-2">
       <input type="hidden" name="parent_id" value={parentId} />
       <Textarea name="body" placeholder="Répondre au parent…" rows={2} required />
       <Button type="submit" disabled={isPending} className="self-end">

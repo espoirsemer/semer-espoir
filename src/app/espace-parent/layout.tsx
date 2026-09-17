@@ -2,7 +2,6 @@ import {
   Home,
   PlayCircle,
   MessagesSquare,
-  MessageCircle,
   CalendarClock,
   Video,
   NotebookPen,
@@ -11,13 +10,13 @@ import {
 } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { CommunityNotifier } from "@/components/community/community-notifier";
+import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
 import { requireProfile } from "@/lib/auth";
 
 const PARENT_NAV = [
   { href: "/espace-parent", label: "Accueil", icon: <Home /> },
   { href: "/espace-parent/hub", label: "Hub de contenu", icon: <PlayCircle /> },
   { href: "/espace-parent/communaute", label: "Communauté", icon: <MessagesSquare /> },
-  { href: "/espace-parent/messagerie", label: "Messagerie", icon: <MessageCircle /> },
   { href: "/espace-parent/lives", label: "Lives Q&A", icon: <Video /> },
   { href: "/espace-parent/consultations", label: "Consultations", icon: <CalendarClock /> },
   { href: "/espace-parent/journal", label: "Journal de bord", icon: <NotebookPen /> },
@@ -38,6 +37,7 @@ export default async function EspaceParentLayout({
   return (
     <div className="flex h-screen overflow-hidden">
       <CommunityNotifier profileId={profile.id} />
+      <ConsultationNotifier profileId={profile.id} role="parent" />
       <AppSidebar
         title="Espace parent"
         items={navItems}

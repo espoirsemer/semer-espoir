@@ -34,10 +34,13 @@ export function ChatThread({
   useEffect(() => {
     const el = composerRef.current;
     if (!el) return;
-    const observer = new ResizeObserver(([entry]) => {
-      setComposerHeight(entry.contentRect.height);
+    // getBoundingClientRect (et non ResizeObserver's contentRect, qui exclut
+    // le padding) pour obtenir la hauteur réellement occupée à l'écran.
+    const observer = new ResizeObserver(() => {
+      setComposerHeight(el.getBoundingClientRect().height);
     });
     observer.observe(el);
+    setComposerHeight(el.getBoundingClientRect().height);
     return () => observer.disconnect();
   }, []);
 

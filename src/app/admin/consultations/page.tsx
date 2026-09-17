@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { Clock, UserRound } from "lucide-react";
+import { Clock, UserRound, NotebookText } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
-import type { ConsultationBooking, ConsultationSlot, SpecialistMessage } from "@/types/database.types";
+import type { Child, ConsultationBooking, ConsultationSlot, SpecialistMessage } from "@/types/database.types";
 import { DeleteSlotButton } from "./delete-slot-button";
 import { ApproveBookingButton } from "./approve-booking-button";
 import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
@@ -42,6 +42,14 @@ export default async function AdminConsultationsPage() {
   const bookingList = (bookings as ConsultationBooking[] | null) ?? [];
   const bookingBySlot = new Map(bookingList.map((b) => [b.slot_id, b]));
   const pendingCount = bookingList.filter((b) => b.status === "pending").length;
+
+  const childIds = [...new Set(bookingList.map((b) => b.child_id).filter((id): id is string => !!id))];
+  const { data: childrenData } = childIds.length
+    ? await supabase.from("children").select("id, first_name").in("id", childIds)
+    : { data: [] as Pick<Child, "id" | "first_name">[] };
+  const childNameById = new Map(
+    ((childrenData as Pick<Child, "id" | "first_name">[] | null) ?? []).map((c) => [c.id, c.first_name]),
+  );
 
   const messageList = (messages as SpecialistMessage[] | null) ?? [];
   const lastMessageByParent = new Map<string, SpecialistMessage>();
@@ -112,6 +120,15 @@ export default async function AdminConsultationsPage() {
                               </Badge>
                               {booking.notes && (
                                 <span className="italic">— {booking.notes}</span>
+                              )}
+                              {booking.status === "confirmed" && booking.child_id && (
+                                <Link
+                                  href={`/admin/abonnes/${booking.parent_id}?child=${booking.child_id}&booking=${booking.id}#enfant-${booking.child_id}`}
+                                  className="flex items-center gap-1 text-amber-700 hover:underline dark:text-amber-400"
+                                >
+                                  <NotebookText className="size-3.5" />
+                                  Dossier de {childNameById.get(booking.child_id) ?? "l'enfant"}
+                                </Link>
                               )}
                             </div>
                           ) : (

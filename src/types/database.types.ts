@@ -25,6 +25,15 @@ export interface Child {
   created_at: string;
 }
 
+export interface ChildNote {
+  id: string;
+  child_id: string;
+  booking_id: string | null;
+  author_id: string;
+  body: string;
+  created_at: string;
+}
+
 export interface ContentCategory {
   id: string;
   name: string;

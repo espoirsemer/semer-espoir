@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -14,19 +15,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { Child } from "@/types/database.types";
-import { bookSlot } from "./actions";
+import { requestConsultation } from "./actions";
 
-export function BookSlotDialog({
-  slotId,
-  label,
-  kids,
-}: {
-  slotId: string;
-  label: string;
-  kids: Child[];
-}) {
+export function RequestConsultationDialog({ kids }: { kids: Child[] }) {
   const [open, setOpen] = useState(false);
-  const [state, formAction, isPending] = useActionState(bookSlot, null);
+  const [state, formAction, isPending] = useActionState(requestConsultation, null);
 
   if (state === "success" && open) {
     setOpen(false);
@@ -34,16 +27,31 @@ export function BookSlotDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button size="sm" />}>Réserver</DialogTrigger>
+      <DialogTrigger render={<Button />}>Demander un rendez-vous</DialogTrigger>
       <DialogContent>
         <form action={formAction}>
-          <input type="hidden" name="slot_id" value={slotId} />
           <DialogHeader>
-            <DialogTitle>Réserver ce créneau</DialogTitle>
-            <DialogDescription>{label}</DialogDescription>
+            <DialogTitle>Demander un rendez-vous</DialogTitle>
+            <DialogDescription>
+              Choisissez le jour et l&apos;heure qui vous conviennent — la spécialiste confirmera dès que possible.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label htmlFor="date">Date</Label>
+                <Input id="date" name="date" type="date" required />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="start_time">Heure</Label>
+                <Input id="start_time" name="start_time" type="time" required />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="duration">Durée (minutes)</Label>
+              <Input id="duration" name="duration" type="number" defaultValue={30} min={15} step={15} />
+            </div>
             {kids.length > 0 && (
               <div className="space-y-2">
                 <Label htmlFor="child_id">Enfant concerné</Label>
@@ -72,7 +80,7 @@ export function BookSlotDialog({
 
           <DialogFooter>
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Réservation..." : "Confirmer"}
+              {isPending ? "Envoi..." : "Envoyer la demande"}
             </Button>
           </DialogFooter>
         </form>

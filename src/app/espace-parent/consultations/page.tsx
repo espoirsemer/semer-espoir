@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock } from "lucide-react";
+import { Clock, Hourglass } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
 import type { Child, ConsultationSlot, ConsultationBooking, SpecialistMessage } from "@/types/database.types";
-import { BookSlotDialog } from "./book-slot-dialog";
+import { RequestConsultationDialog } from "./request-consultation-dialog";
 import { CancelBookingButton } from "./cancel-booking-button";
 import { MessageForm } from "./message-form";
 import { SpecialistThread } from "@/components/consultations/specialist-thread";
@@ -37,7 +37,7 @@ export default async function ConsultationsPage() {
         <div>
           <h1 className="text-2xl font-semibold">Consultations</h1>
           <p className="text-muted-foreground">
-            Réservez un créneau pour échanger directement avec la spécialiste.
+            Demandez un rendez-vous pour échanger directement avec la spécialiste.
           </p>
         </div>
         <Card>
@@ -57,20 +57,15 @@ export default async function ConsultationsPage() {
 
   const supabase = await createClient();
 
-  const [{ data: availableSlots }, { data: myBookings }, { data: children }, { data: messages }] =
-    await Promise.all([
-      supabase.rpc("get_available_slots"),
-      supabase
-        .from("consultation_bookings")
-        .select("*, slot:consultation_slots(*)")
-        .eq("parent_id", profile.id),
-      supabase.from("children").select("*").eq("parent_id", profile.id),
-      supabase.from("specialist_messages").select("*").eq("parent_id", profile.id).order("created_at"),
-    ]);
+  const [{ data: myBookings }, { data: children }, { data: messages }] = await Promise.all([
+    supabase
+      .from("consultation_bookings")
+      .select("*, slot:consultation_slots(*)")
+      .eq("parent_id", profile.id),
+    supabase.from("children").select("*").eq("parent_id", profile.id),
+    supabase.from("specialist_messages").select("*").eq("parent_id", profile.id).order("created_at"),
+  ]);
 
-  const slots = ((availableSlots as ConsultationSlot[] | null) ?? []).sort(
-    (a, b) => new Date(a.starts_at).getTime() - new Date(b.starts_at).getTime(),
-  );
   const bookings = (
     (myBookings as (ConsultationBooking & { slot: ConsultationSlot | null })[] | null) ?? []
   )
@@ -83,13 +78,28 @@ export default async function ConsultationsPage() {
   const adminIds = [...new Set(messageList.filter((m) => m.sender_id !== profile.id).map((m) => m.sender_id))];
   const names = hasConfirmed ? await getAuthorNames(supabase, adminIds) : new Map<string, string>();
 
+  // Rendez-vous confirmé dont l'heure est déjà passée : si la spécialiste n'a
+  // encore rien écrit depuis, on prévient le parent qu'elle arrive.
+  const now = new Date().getTime();
+  const dueBooking = bookings
+    .filter((b) => b.status === "confirmed" && new Date(b.slot!.starts_at).getTime() <= now)
+    .sort((a, b) => new Date(b.slot!.starts_at).getTime() - new Date(a.slot!.starts_at).getTime())[0];
+  const specialistHasSpokenSinceDue = dueBooking
+    ? messageList.some(
+        (m) =>
+          m.sender_id !== profile.id &&
+          new Date(m.created_at).getTime() >= new Date(dueBooking.slot!.starts_at).getTime(),
+      )
+    : false;
+  const showWaitingBanner = !!dueBooking && !specialistHasSpokenSinceDue;
+
   return (
     <div className="space-y-6">
       <ConsultationNotifier profileId={profile.id} role="parent" />
       <div>
         <h1 className="text-2xl font-semibold">Consultations</h1>
         <p className="text-muted-foreground">
-          Réservez un créneau et échangez avec la spécialiste.
+          Demandez un rendez-vous et échangez avec la spécialiste.
         </p>
       </div>
 
@@ -99,12 +109,14 @@ export default async function ConsultationsPage() {
           <TabsTrigger value="messagerie">Messagerie</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="rendez-vous" className="space-y-8 pt-4">
+        <TabsContent value="rendez-vous" className="space-y-6 pt-4">
+          <RequestConsultationDialog kids={childList} />
+
           <div className="space-y-3">
             <h2 className="text-lg font-medium">Mes consultations</h2>
             {bookings.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                Vous n&apos;avez pas encore de consultation programmée.
+                Vous n&apos;avez pas encore demandé de consultation.
               </p>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
@@ -132,29 +144,6 @@ export default async function ConsultationsPage() {
               </div>
             )}
           </div>
-
-          <div className="space-y-3">
-            <h2 className="text-lg font-medium">Créneaux disponibles</h2>
-            {slots.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                Aucun créneau disponible pour l&apos;instant — revenez bientôt.
-              </p>
-            ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {slots.map((slot) => (
-                  <Card key={slot.id}>
-                    <CardContent className="flex items-center justify-between gap-3 pt-6">
-                      <div className="flex items-center gap-2.5">
-                        <Clock className="size-4 text-amber-600 dark:text-amber-400" />
-                        <p className="text-sm font-medium">{formatSlot(slot)}</p>
-                      </div>
-                      <BookSlotDialog slotId={slot.id} label={formatSlot(slot)} kids={childList} />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
         </TabsContent>
 
         <TabsContent value="messagerie" className="pt-4">
@@ -162,7 +151,7 @@ export default async function ConsultationsPage() {
             <Card>
               <CardHeader>
                 <CardTitle>
-                  {bookings.length > 0 ? "En attente de confirmation" : "Réservez d'abord un rendez-vous"}
+                  {bookings.length > 0 ? "En attente de confirmation" : "Demandez d'abord un rendez-vous"}
                 </CardTitle>
                 <CardDescription>
                   {bookings.length > 0
@@ -173,6 +162,13 @@ export default async function ConsultationsPage() {
             </Card>
           ) : (
             <div className="flex h-[32rem] flex-col gap-4">
+              {showWaitingBanner && (
+                <div className="flex shrink-0 items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                  <Hourglass className="size-4 shrink-0" />
+                  Votre rendez-vous ({formatSlot(dueBooking!.slot!)}) est prévu — la spécialiste sera présente
+                  d&apos;un instant à l&apos;autre.
+                </div>
+              )}
               <SpecialistThread
                 messages={messageList}
                 viewerId={profile.id}

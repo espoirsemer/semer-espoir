@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { Clock, UserRound } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
 import type { ConsultationBooking, ConsultationSlot, SpecialistMessage } from "@/types/database.types";
-import { SlotForm } from "./slot-form";
 import { DeleteSlotButton } from "./delete-slot-button";
 import { ApproveBookingButton } from "./approve-booking-button";
 import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
@@ -70,7 +69,7 @@ export default async function AdminConsultationsPage() {
       <div>
         <h1 className="text-2xl font-semibold">Consultations</h1>
         <p className="text-muted-foreground">
-          Publiez des créneaux, approuvez les demandes, échangez avec les parents.
+          Approuvez les demandes de rendez-vous des parents, échangez avec eux.
         </p>
       </div>
 
@@ -88,19 +87,10 @@ export default async function AdminConsultationsPage() {
         </TabsList>
 
         <TabsContent value="rendez-vous" className="space-y-8 pt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Ajouter un créneau</CardTitle>
-            </CardHeader>
-            <div className="px-6 pb-6">
-              <SlotForm />
-            </div>
-          </Card>
-
           <div className="space-y-3">
-            <h2 className="text-lg font-medium">Créneaux à venir ({slotList.length})</h2>
+            <h2 className="text-lg font-medium">Demandes de rendez-vous ({slotList.length})</h2>
             {slotList.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Aucun créneau publié pour l&apos;instant.</p>
+              <p className="text-sm text-muted-foreground">Aucune demande pour l&apos;instant.</p>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
                 {slotList.map((slot) => {

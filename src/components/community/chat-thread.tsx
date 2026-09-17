@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChatMessage } from "./chat-message";
 import { MessageForm } from "./message-form";
@@ -25,10 +25,28 @@ export function ChatThread({
   showModeration?: boolean;
 }) {
   const [replyingTo, setReplyingTo] = useState<ReplyTarget | null>(null);
+  const composerRef = useRef<HTMLDivElement>(null);
+  const [composerHeight, setComposerHeight] = useState(0);
+
+  // Le composeur est ancré en bas (sticky) et flotte donc par-dessus le fil
+  // de messages ; sans cette marge dynamique, les derniers messages se
+  // retrouvaient cachés derrière lui plutôt que scrollables au-dessus.
+  useEffect(() => {
+    const el = composerRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setComposerHeight(entry.contentRect.height);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-5 rounded-2xl border border-border/60 bg-background/60 p-4">
+      <div
+        className="flex flex-col gap-5 rounded-2xl border border-border/60 bg-background/60 p-4"
+        style={{ paddingBottom: composerHeight + 16 }}
+      >
         {messages.length === 0 && (
           <p className="text-sm text-muted-foreground">
             Aucun message pour l&apos;instant — soyez le premier à écrire.
@@ -56,7 +74,10 @@ export function ChatThread({
         ))}
       </div>
 
-      <div className="sticky bottom-0 -mx-8 -mb-8 border-t border-border/60 bg-muted/95 px-8 pt-4 pb-8 backdrop-blur-sm">
+      <div
+        ref={composerRef}
+        className="sticky bottom-0 -mx-8 -mb-8 border-t border-border/60 bg-muted/95 px-8 pt-4 pb-8 backdrop-blur-sm"
+      >
         <Card>
           <CardContent className={canPost ? "pt-6" : "flex items-center gap-2 pt-6 text-sm text-muted-foreground"}>
             {canPost ? (

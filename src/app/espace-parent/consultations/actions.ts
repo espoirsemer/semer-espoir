@@ -12,8 +12,13 @@ export async function requestConsultation(_prevState: string | null, formData: F
   const durationMinutes = Number(formData.get("duration") ?? 30);
   const childId = (formData.get("child_id") as string) || null;
   const notes = (formData.get("notes") as string) || null;
+  const paymentReference = (formData.get("payment_reference") as string) || null;
+  const paymentConfirmed = formData.get("payment_confirmed") === "on";
 
   if (!date || !startTime) return "Date et heure sont obligatoires.";
+  if (!paymentConfirmed) {
+    return "Merci de confirmer le paiement des frais de consultation avant d'envoyer votre demande.";
+  }
 
   const startsAt = new Date(`${date}T${startTime}:00`);
   if (Number.isNaN(startsAt.getTime())) return "Date ou heure invalide.";
@@ -40,6 +45,8 @@ export async function requestConsultation(_prevState: string | null, formData: F
     parent_id: profile.id,
     child_id: childId,
     notes,
+    payment_reference: paymentReference,
+    payment_confirmed: paymentConfirmed,
   });
 
   if (bookingError) {

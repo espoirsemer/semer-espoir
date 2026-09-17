@@ -56,3 +56,36 @@ export async function approveBooking(bookingId: string): Promise<string | null> 
   revalidatePath("/espace-parent/consultations");
   return null;
 }
+
+export async function updateConsultationFee(_prevState: string | null, formData: FormData) {
+  await requireAdmin();
+
+  const amountRaw = formData.get("amount") as string;
+  const currency = (formData.get("currency") as string) || "FCFA";
+  const paymentLink = (formData.get("payment_link") as string) || null;
+
+  const amount = Number(amountRaw);
+  if (amountRaw.trim() === "" || Number.isNaN(amount) || amount < 0) {
+    return "Le montant doit être un nombre positif.";
+  }
+
+  if (paymentLink) {
+    try {
+      new URL(paymentLink);
+    } catch {
+      return "Le lien de paiement doit être une URL valide (https://...).";
+    }
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("consultation_fee")
+    .update({ amount, currency, payment_link: paymentLink, updated_at: new Date().toISOString() })
+    .eq("id", true);
+
+  if (error) return error.message;
+
+  revalidatePath("/admin/consultations");
+  revalidatePath("/espace-parent/consultations");
+  return "success";
+}

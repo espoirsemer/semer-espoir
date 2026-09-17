@@ -8,6 +8,7 @@ import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
 import { getSignedAttachmentUrls } from "@/lib/get-signed-attachment-urls";
+import { getConsultationFee } from "@/lib/get-consultation-fee";
 import type { Child, ConsultationSlot, ConsultationBooking, SpecialistMessage } from "@/types/database.types";
 import { RequestConsultationDialog } from "./request-consultation-dialog";
 import { CancelBookingButton } from "./cancel-booking-button";
@@ -59,13 +60,14 @@ export default async function ConsultationsPage() {
 
   const supabase = await createClient();
 
-  const [{ data: myBookings }, { data: children }, { data: messages }] = await Promise.all([
+  const [{ data: myBookings }, { data: children }, { data: messages }, fee] = await Promise.all([
     supabase
       .from("consultation_bookings")
       .select("*, slot:consultation_slots(*)")
       .eq("parent_id", profile.id),
     supabase.from("children").select("*").eq("parent_id", profile.id),
     supabase.from("specialist_messages").select("*").eq("parent_id", profile.id).order("created_at"),
+    getConsultationFee(),
   ]);
 
   const bookings = (
@@ -114,7 +116,7 @@ export default async function ConsultationsPage() {
         </TabsList>
 
         <TabsContent value="rendez-vous" className="space-y-6 pt-4">
-          <RequestConsultationDialog kids={childList} />
+          <RequestConsultationDialog kids={childList} fee={fee} />
 
           <div className="space-y-3">
             <h2 className="text-lg font-medium">Mes consultations</h2>

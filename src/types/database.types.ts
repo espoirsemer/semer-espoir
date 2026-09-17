@@ -132,7 +132,17 @@ export interface ConsultationBooking {
   child_id: string | null;
   notes: string | null;
   status: ConsultationBookingStatus;
+  payment_reference: string | null;
+  payment_confirmed: boolean;
   created_at: string;
+  updated_at: string;
+}
+
+export interface ConsultationFee {
+  id: true;
+  amount: number;
+  currency: string;
+  payment_link: string | null;
   updated_at: string;
 }
 

@@ -6,9 +6,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
+import { getConsultationFee } from "@/lib/get-consultation-fee";
 import type { Child, ConsultationBooking, ConsultationSlot, SpecialistMessage } from "@/types/database.types";
 import { DeleteSlotButton } from "./delete-slot-button";
 import { ApproveBookingButton } from "./approve-booking-button";
+import { ConsultationFeeForm } from "./consultation-fee-form";
 import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
 
 function formatSlot(slot: ConsultationSlot) {
@@ -28,7 +30,7 @@ export default async function AdminConsultationsPage() {
   const admin = await requireAdmin();
   const supabase = await createClient();
 
-  const [{ data: slots }, { data: bookings }, { data: messages }] = await Promise.all([
+  const [{ data: slots }, { data: bookings }, { data: messages }, fee] = await Promise.all([
     supabase
       .from("consultation_slots")
       .select("*")
@@ -36,6 +38,7 @@ export default async function AdminConsultationsPage() {
       .order("starts_at"),
     supabase.from("consultation_bookings").select("*"),
     supabase.from("specialist_messages").select("*").order("created_at", { ascending: false }),
+    getConsultationFee(),
   ]);
 
   const slotList = (slots as ConsultationSlot[] | null) ?? [];
@@ -95,6 +98,10 @@ export default async function AdminConsultationsPage() {
         </TabsList>
 
         <TabsContent value="rendez-vous" className="space-y-8 pt-4">
+          <div className="max-w-md">
+            <ConsultationFeeForm fee={fee} />
+          </div>
+
           <div className="space-y-3">
             <h2 className="text-lg font-medium">Demandes de rendez-vous ({slotList.length})</h2>
             {slotList.length === 0 ? (
@@ -117,6 +124,11 @@ export default async function AdminConsultationsPage() {
                               {names.get(booking.parent_id) ?? "Parent"}
                               <Badge variant={booking.status === "confirmed" ? "default" : "secondary"}>
                                 {booking.status === "confirmed" ? "Confirmé" : "En attente"}
+                              </Badge>
+                              <Badge variant={booking.payment_confirmed ? "default" : "destructive"}>
+                                {booking.payment_confirmed
+                                  ? `Payé${booking.payment_reference ? ` (${booking.payment_reference})` : ""}`
+                                  : "Non payé"}
                               </Badge>
                               {booking.notes && (
                                 <span className="italic">— {booking.notes}</span>

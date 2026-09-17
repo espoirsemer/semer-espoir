@@ -22,11 +22,12 @@ export default async function LivesPage() {
         <Card>
           <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-6">
             <p className="text-sm text-muted-foreground">
-              L&apos;accès aux Lives Q&amp;A est réservé aux formules Guidance
-              et VIP.
+              L&apos;accès aux Lives Q&amp;A n&apos;est pas encore inclus dans
+              l&apos;abonnement actuel — de nouveaux avantages seront ajoutés
+              progressivement.
             </p>
             <Link href="/#tarifs" className={buttonVariants({ size: "sm" })}>
-              Voir les formules
+              Voir l&apos;abonnement
             </Link>
           </CardContent>
         </Card>

@@ -74,7 +74,7 @@ export function Hero() {
               href="#tarifs"
               className={cn(buttonVariants({ size: "lg", variant: "outline" }), "px-8")}
             >
-              Découvrir les formules
+              Découvrir l&apos;abonnement
             </Link>
           </motion.div>
         </motion.div>

@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "#modules", label: "Ce que vous trouverez" },
   { href: "#specialiste", label: "L'experte" },
-  { href: "#tarifs", label: "Tarifs" },
   { href: "#faq", label: "FAQ" },
 ];
 

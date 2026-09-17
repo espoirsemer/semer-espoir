@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/types/database.types";
 
 const TIER_LABELS: Record<string, string> = {
-  tier_1: "Autonomie",
+  tier_1: "Abonnement",
   tier_2: "Guidance",
   tier_3: "VIP",
 };

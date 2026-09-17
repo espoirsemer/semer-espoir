@@ -14,7 +14,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import type { SubscriptionPlan } from "@/types/database.types";
-import { updatePlan } from "./actions";
+import { updatePlan } from "./plan-actions";
 
 export function PlanForm({ plan }: { plan: SubscriptionPlan }) {
   const [state, formAction, isPending] = useActionState(updatePlan, null);
@@ -23,7 +23,7 @@ export function PlanForm({ plan }: { plan: SubscriptionPlan }) {
     <Card>
       <CardHeader>
         <CardTitle>{plan.name}</CardTitle>
-        <CardDescription>Formule {plan.key.replace("tier_", "")}</CardDescription>
+        <CardDescription>Prix et lien de paiement affichés sur la landing page</CardDescription>
       </CardHeader>
       <form action={formAction}>
         <input type="hidden" name="key" value={plan.key} />
@@ -60,7 +60,7 @@ export function PlanForm({ plan }: { plan: SubscriptionPlan }) {
               defaultValue={plan.payment_link ?? ""}
             />
             <p className="text-xs text-muted-foreground">
-              Si renseigné, le bouton &laquo;&nbsp;Choisir {plan.name}&nbsp;&raquo;
+              Si renseigné, le bouton &laquo;&nbsp;Rejoindre {plan.name}&nbsp;&raquo;
               de la landing page y renvoie directement (nouvel onglet). Sinon,
               il renvoie vers la page d&apos;inscription.
             </p>

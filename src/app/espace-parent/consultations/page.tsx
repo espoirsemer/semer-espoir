@@ -44,11 +44,12 @@ export default async function ConsultationsPage() {
         <Card>
           <CardContent className="flex flex-wrap items-center justify-between gap-3 pt-6">
             <p className="text-sm text-muted-foreground">
-              La réservation de consultations est réservée aux formules
-              Guidance et VIP.
+              La réservation de consultations n&apos;est pas encore incluse
+              dans l&apos;abonnement actuel — de nouveaux avantages seront
+              ajoutés progressivement.
             </p>
             <Link href="/#tarifs" className={buttonVariants({ size: "sm" })}>
-              Voir les formules
+              Voir l&apos;abonnement
             </Link>
           </CardContent>
         </Card>

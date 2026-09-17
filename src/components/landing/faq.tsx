@@ -20,10 +20,10 @@ const FAQ_ITEMS = [
   {
     question: "Qui peut voir les données du journal de bord de mon enfant ?",
     answer:
-      "Seul·e vous y avez accès par défaut. En formule VIP, la spécialiste peut consulter les graphiques d'évolution de votre enfant pour préparer vos consultations — jamais les autres familles.",
+      "Seul·e vous y avez accès. L'analyse des graphiques d'évolution par la spécialiste n'est pas encore incluse dans l'abonnement actuel — elle sera proposée prochainement, et jamais partagée avec les autres familles.",
   },
   {
-    question: "Puis-je changer de formule ou annuler à tout moment ?",
+    question: "Puis-je annuler mon abonnement à tout moment ?",
     answer:
       "Oui, vous gérez votre abonnement librement depuis votre espace parent, sans engagement de durée.",
   },

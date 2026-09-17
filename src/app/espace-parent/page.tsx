@@ -17,8 +17,8 @@ export default async function EspaceParentAccueil() {
           Bonjour{profile.full_name ? `, ${profile.full_name}` : ""}
         </h1>
         <p className="text-muted-foreground">
-          Formule actuelle :{" "}
-          {profile.subscription_tier ?? "aucune — choisissez un abonnement"}
+          Abonnement :{" "}
+          {profile.subscription_tier ? "actif" : "aucun — abonnez-vous"}
         </p>
       </div>
 

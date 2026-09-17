@@ -30,7 +30,7 @@ export async function requestConsultation(_prevState: string | null, formData: F
 
   if (slotError) {
     if (slotError.code === "42501" || slotError.message.includes("row-level security")) {
-      return "Votre formule ne permet pas encore de demander une consultation. Passez à Guidance ou VIP.";
+      return "Votre abonnement ne permet pas encore de demander une consultation.";
     }
     return slotError.message;
   }

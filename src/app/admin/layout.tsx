@@ -1,4 +1,4 @@
-import { BarChart3, Tag, PlayCircle, ShieldCheck, Users, CalendarClock, Video, Home } from "lucide-react";
+import { BarChart3, PlayCircle, ShieldCheck, Users, CalendarClock, Video, Home } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { CommunityNotifier } from "@/components/community/community-notifier";
 import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
@@ -6,7 +6,6 @@ import { requireAdmin } from "@/lib/auth";
 
 const ADMIN_NAV = [
   { href: "/admin", label: "Vue Business", icon: <BarChart3 /> },
-  { href: "/admin/tarifs", label: "Tarifs", icon: <Tag /> },
   { href: "/admin/contenus", label: "Contenus", icon: <PlayCircle /> },
   { href: "/admin/communaute", label: "Modération", icon: <ShieldCheck /> },
   { href: "/admin/lives", label: "Lives Q&A", icon: <Video /> },

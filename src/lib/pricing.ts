@@ -5,8 +5,12 @@ import type { SubscriptionPlan, SubscriptionTier } from "@/types/database.types"
 // importer aucun code serveur : il est utilisé par des Client Components.
 export const PLAN_FEATURES: Record<SubscriptionTier, { name: string; features: string[] }> = {
   tier_1: {
-    name: "Autonomie",
-    features: ["Vidéothèque et boîte à outils", "Communauté en lecture seule"],
+    name: "Abonnement Semer Espoir",
+    features: [
+      "Accès complet à la communauté de parents",
+      "Vidéothèque et boîte à outils",
+      "De nouveaux avantages seront ajoutés progressivement",
+    ],
   },
   tier_2: {
     name: "Guidance",
@@ -25,7 +29,9 @@ export const PLAN_FEATURES: Record<SubscriptionTier, { name: string; features: s
   },
 };
 
-export const PLAN_ORDER: SubscriptionTier[] = ["tier_1", "tier_2", "tier_3"];
+// Un seul plan est vendu publiquement pour l'instant ; tier_2/tier_3 restent
+// utilisables en interne (attribution manuelle) mais ne sont plus affichés.
+export const PLAN_ORDER: SubscriptionTier[] = ["tier_1"];
 
 export function formatPrice(plan: SubscriptionPlan): string {
   if (plan.price_amount == null) return "Prix sur demande";

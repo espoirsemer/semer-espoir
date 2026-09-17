@@ -11,7 +11,7 @@ export async function getPricingPlans(): Promise<SubscriptionPlan[]> {
 
   const plans = (data as SubscriptionPlan[] | null) ?? [];
 
-  // Garantit les 3 formules dans le bon ordre même si une ligne manque.
+  // Garantit une ligne pour chaque plan de PLAN_ORDER même si absent en base.
   return PLAN_ORDER.map(
     (key) =>
       plans.find((p) => p.key === key) ?? {

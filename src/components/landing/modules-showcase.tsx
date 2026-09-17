@@ -25,7 +25,7 @@ const MODULES = [
     features: [
       "Canaux thématiques : sommeil, alimentation, scolarité…",
       "Fils de discussion et petites victoires du quotidien",
-      "Lives Q&A avec la spécialiste (formules Guidance et VIP)",
+      "Lives Q&A avec la spécialiste (bientôt disponible)",
     ],
   },
   {
@@ -36,7 +36,7 @@ const MODULES = [
     features: [
       "Niveau d'anxiété et déclencheurs en quelques clics",
       "Courbes de tendance sur le mois",
-      "Analyse par la spécialiste avant vos consultations (formule VIP)",
+      "Analyse par la spécialiste avant vos consultations (bientôt disponible)",
     ],
   },
 ];

@@ -10,7 +10,7 @@ import { ChildNoteForm } from "../child-note-form";
 import { DeleteNoteButton } from "../delete-note-button";
 
 const TIER_LABELS: Record<string, string> = {
-  tier_1: "Autonomie",
+  tier_1: "Abonnement",
   tier_2: "Guidance",
   tier_3: "VIP",
 };
@@ -141,8 +141,9 @@ export default async function AdminAbonneDetailPage({
               <CardContent className="space-y-6">
                 {!isVip ? (
                   <p className="text-sm text-muted-foreground">
-                    Le journal de bord n&apos;est visible que pour les abonnés
-                    formule VIP.
+                    L&apos;analyse du journal de bord par la spécialiste
+                    n&apos;est pas encore incluse dans l&apos;abonnement
+                    actuel.
                   </p>
                 ) : entries.length === 0 ? (
                   <p className="text-sm text-muted-foreground">

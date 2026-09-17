@@ -1,38 +1,27 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
+import { getPricingPlans } from "@/lib/get-pricing-plans";
 import type { SubscriptionTier } from "@/types/database.types";
-
-const TIER_LABELS: Record<SubscriptionTier, string> = {
-  tier_1: "Autonomie",
-  tier_2: "Guidance",
-  tier_3: "VIP",
-};
+import { PlanForm } from "./plan-form";
 
 export default async function AdminAccueil() {
   const supabase = await createClient();
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("role, subscription_tier");
+  const [{ data: profiles }, plans] = await Promise.all([
+    supabase.from("profiles").select("role, subscription_tier"),
+    getPricingPlans(),
+  ]);
 
   const list = (profiles as { role: string; subscription_tier: SubscriptionTier | null }[] | null) ?? [];
   const parents = list.filter((p) => p.role === "parent");
   const activeSubscribers = parents.filter((p) => p.subscription_tier != null);
-
-  const byTier: Record<SubscriptionTier, number> = {
-    tier_1: 0,
-    tier_2: 0,
-    tier_3: 0,
-  };
-  for (const p of activeSubscribers) {
-    if (p.subscription_tier) byTier[p.subscription_tier]++;
-  }
+  const plan = plans[0];
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold">Vue Business</h1>
         <p className="text-muted-foreground">
-          Indicateurs clés : abonnés actifs, répartition par tier.
+          Indicateurs clés et prix de l&apos;abonnement.
         </p>
       </div>
 
@@ -45,24 +34,15 @@ export default async function AdminAccueil() {
         </Card>
         <Card>
           <CardHeader>
-            <CardDescription>Abonnés actifs (tier payant)</CardDescription>
+            <CardDescription>Abonnés actifs</CardDescription>
             <CardTitle className="text-3xl">{activeSubscribers.length}</CardTitle>
           </CardHeader>
         </Card>
       </div>
 
-      <div>
-        <h2 className="mb-3 text-lg font-medium">Répartition par formule</h2>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {(Object.keys(TIER_LABELS) as SubscriptionTier[]).map((tier) => (
-            <Card key={tier}>
-              <CardHeader>
-                <CardDescription>{TIER_LABELS[tier]}</CardDescription>
-                <CardTitle className="text-3xl">{byTier[tier]}</CardTitle>
-              </CardHeader>
-            </Card>
-          ))}
-        </div>
+      <div className="max-w-md">
+        <h2 className="mb-3 text-lg font-medium">Abonnement</h2>
+        {plan && <PlanForm plan={plan} />}
       </div>
     </div>
   );

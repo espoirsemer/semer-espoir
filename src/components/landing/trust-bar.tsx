@@ -4,7 +4,7 @@ const ITEMS = [
   { icon: Globe2, label: "Accessible partout, 100% en ligne" },
   { icon: ShieldCheck, label: "Vos données protégées et confidentielles" },
   { icon: HeartHandshake, label: "Porté par le centre ANLE, à Douala" },
-  { icon: Sprout, label: "3 formules, sans engagement" },
+  { icon: Sprout, label: "Un abonnement simple, sans engagement" },
 ];
 
 export function TrustBar() {

@@ -41,6 +41,6 @@ export async function updatePlan(_prevState: string | null, formData: FormData) 
   }
 
   revalidatePath("/");
-  revalidatePath("/admin/tarifs");
+  revalidatePath("/admin");
   return "success";
 }

@@ -20,7 +20,8 @@ export default async function AdminLivesPage() {
         <h1 className="text-2xl font-semibold">Lives Q&amp;A</h1>
         <p className="text-muted-foreground">
           Programmez un appel de groupe ou un webinaire quand c&apos;est
-          nécessaire — visible par les formules Guidance et VIP.
+          nécessaire — fonctionnalité pas encore incluse dans l&apos;abonnement
+          actuel.
         </p>
       </div>
 

@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getAuthorProfiles } from "@/lib/get-author-profiles";
 import { getSignedAttachmentUrls } from "@/lib/get-signed-attachment-urls";
 import { prepareMessages } from "@/lib/community/prepare-messages";
+import { communityMessageCutoffIso, COMMUNITY_MESSAGE_RETENTION_HOURS } from "@/lib/community/retention";
 import type { CommunityChannel, CommunityMessage, CommunityReaction } from "@/types/database.types";
 import { ChatThread } from "@/components/community/chat-thread";
 import { AutoRefresh } from "@/components/community/auto-refresh";
@@ -32,6 +33,7 @@ export default async function AdminChannelPage({
     .from("community_messages")
     .select("*")
     .eq("channel_id", channel.id)
+    .gte("created_at", communityMessageCutoffIso())
     .order("created_at");
 
   const list = (messages as CommunityMessage[] | null) ?? [];
@@ -76,6 +78,9 @@ export default async function AdminChannelPage({
           </div>
           <p className="text-sm text-muted-foreground">
             Vous pouvez toujours écrire ici, même quand le canal est verrouillé pour les parents.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Les messages sont automatiquement supprimés {COMMUNITY_MESSAGE_RETENTION_HOURS}h après leur envoi.
           </p>
         </div>
         <LockToggle

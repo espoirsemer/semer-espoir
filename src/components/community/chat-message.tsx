@@ -64,7 +64,12 @@ export function ChatMessage({
 
         {message.attachmentUrl && message.attachmentType && (
           <div className="mb-1.5">
-            <Attachment url={message.attachmentUrl} type={message.attachmentType} name={message.attachmentName} />
+            <Attachment
+              url={message.attachmentUrl}
+              type={message.attachmentType}
+              name={message.attachmentName}
+              tinted={tinted}
+            />
           </div>
         )}
         {message.body && <p className="whitespace-pre-wrap break-words">{message.body}</p>}

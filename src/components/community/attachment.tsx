@@ -1,14 +1,17 @@
 import { FileText } from "lucide-react";
 import type { CommunityAttachmentType } from "@/types/database.types";
+import { VoiceMessagePlayer } from "./voice-message-player";
 
 export function Attachment({
   url,
   type,
   name,
+  tinted = false,
 }: {
   url: string;
   type: CommunityAttachmentType;
   name: string | null;
+  tinted?: boolean;
 }) {
   if (type === "image") {
     // eslint-disable-next-line @next/next/no-img-element -- URL signée temporaire, incompatible avec l'optimiseur next/image.
@@ -20,7 +23,7 @@ export function Attachment({
   }
 
   if (type === "audio") {
-    return <audio src={url} controls className="w-full max-w-[280px]" />;
+    return <VoiceMessagePlayer url={url} tinted={tinted} />;
   }
 
   return (

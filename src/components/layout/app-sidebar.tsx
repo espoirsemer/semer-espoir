@@ -25,17 +25,17 @@ export function AppSidebar({
   const pathname = usePathname();
 
   return (
-    <aside className="flex w-64 shrink-0 flex-col bg-stone-950 px-4 py-6 text-stone-300">
-      <Link href="/" className="mb-7 flex items-center gap-2 px-2 text-lg font-semibold tracking-tight text-white">
+    <aside className="flex h-full w-64 shrink-0 flex-col overflow-hidden bg-stone-950 px-4 py-6 text-stone-300">
+      <Link href="/" className="mb-7 flex shrink-0 items-center gap-2 px-2 text-lg font-semibold tracking-tight text-white">
         <span className="flex size-7 items-center justify-center rounded-lg bg-amber-600 text-white">
           <Sprout className="size-4" />
         </span>
         Semer Espoir
       </Link>
-      <p className="mb-2 px-2 text-xs font-semibold tracking-widest text-stone-500 uppercase">
+      <p className="mb-2 shrink-0 px-2 text-xs font-semibold tracking-widest text-stone-500 uppercase">
         {title}
       </p>
-      <nav className="flex flex-1 flex-col gap-1">
+      <nav className="flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto">
         {items.map((item) => {
           const isActive =
             item.href === pathname ||
@@ -61,7 +61,7 @@ export function AppSidebar({
           );
         })}
       </nav>
-      <div className="mt-4 flex flex-col gap-3 border-t border-stone-800 px-2 pt-4">
+      <div className="mt-4 flex shrink-0 flex-col gap-3 border-t border-stone-800 px-2 pt-4">
         {userLabel && (
           <p className="truncate text-sm text-stone-400">{userLabel}</p>
         )}

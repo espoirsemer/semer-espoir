@@ -56,20 +56,22 @@ export function ChatThread({
         ))}
       </div>
 
-      <Card>
-        <CardContent className={canPost ? "pt-6" : "flex items-center gap-2 pt-6 text-sm text-muted-foreground"}>
-          {canPost ? (
-            <MessageForm
-              channelId={channelId}
-              channelSlug={channelSlug}
-              replyingTo={replyingTo}
-              onCancelReply={() => setReplyingTo(null)}
-            />
-          ) : (
-            lockedNotice
-          )}
-        </CardContent>
-      </Card>
+      <div className="sticky bottom-0 -mx-8 -mb-8 border-t border-border/60 bg-muted/95 px-8 pt-4 pb-8 backdrop-blur-sm">
+        <Card>
+          <CardContent className={canPost ? "pt-6" : "flex items-center gap-2 pt-6 text-sm text-muted-foreground"}>
+            {canPost ? (
+              <MessageForm
+                channelId={channelId}
+                channelSlug={channelSlug}
+                replyingTo={replyingTo}
+                onCancelReply={() => setReplyingTo(null)}
+              />
+            ) : (
+              lockedNotice
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

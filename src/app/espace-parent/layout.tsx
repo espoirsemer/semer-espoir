@@ -36,14 +36,14 @@ export default async function EspaceParentLayout({
       : PARENT_NAV;
 
   return (
-    <div className="flex flex-1">
+    <div className="flex h-screen overflow-hidden">
       <CommunityNotifier profileId={profile.id} />
       <AppSidebar
         title="Espace parent"
         items={navItems}
         userLabel={profile.full_name}
       />
-      <main className="flex-1 overflow-y-auto bg-muted/30 p-8">{children}</main>
+      <main className="min-h-0 flex-1 overflow-y-auto bg-muted/30 p-8">{children}</main>
     </div>
   );
 }

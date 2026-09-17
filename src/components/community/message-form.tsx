@@ -3,9 +3,9 @@
 import { useActionState, useRef, useEffect, useState } from "react";
 import { SendHorizontal, X } from "lucide-react";
 import { postMessage } from "@/lib/community/actions";
-import { AttachmentMenu } from "./attachment-menu";
-import { CameraCaptureDialog } from "./camera-capture-dialog";
-import { VoiceRecorderButton } from "./voice-recorder-button";
+import { AttachmentMenu } from "@/components/chat/attachment-menu";
+import { CameraCaptureDialog } from "@/components/chat/camera-capture-dialog";
+import { VoiceRecorderButton } from "@/components/chat/voice-recorder-button";
 import type { ReplyTarget } from "./chat-thread";
 
 export function MessageForm({

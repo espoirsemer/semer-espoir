@@ -111,6 +111,9 @@ export interface SpecialistMessage {
   sender_id: string;
   body: string;
   created_at: string;
+  attachment_path: string | null;
+  attachment_type: CommunityAttachmentType | null;
+  attachment_name: string | null;
 }
 
 export interface ConsultationSlot {

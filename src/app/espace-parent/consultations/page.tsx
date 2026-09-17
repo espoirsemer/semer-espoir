@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { requireProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
+import { getSignedAttachmentUrls } from "@/lib/get-signed-attachment-urls";
 import type { Child, ConsultationSlot, ConsultationBooking, SpecialistMessage } from "@/types/database.types";
 import { RequestConsultationDialog } from "./request-consultation-dialog";
 import { CancelBookingButton } from "./cancel-booking-button";
@@ -77,6 +78,8 @@ export default async function ConsultationsPage() {
   const hasConfirmed = bookings.some((b) => b.status === "confirmed");
   const adminIds = [...new Set(messageList.filter((m) => m.sender_id !== profile.id).map((m) => m.sender_id))];
   const names = hasConfirmed ? await getAuthorNames(supabase, adminIds) : new Map<string, string>();
+  const attachmentPaths = messageList.map((m) => m.attachment_path).filter((p): p is string => !!p);
+  const attachmentUrls = await getSignedAttachmentUrls(attachmentPaths);
 
   // Rendez-vous confirmé dont l'heure est déjà passée : si la spécialiste n'a
   // encore rien écrit depuis, on prévient le parent qu'elle arrive.
@@ -174,8 +177,9 @@ export default async function ConsultationsPage() {
                 viewerId={profile.id}
                 resolveOtherName={(id) => names.get(id)}
                 otherFallback="La spécialiste"
+                attachmentUrls={attachmentUrls}
               />
-              <MessageForm />
+              <MessageForm parentId={profile.id} />
             </div>
           )}
         </TabsContent>

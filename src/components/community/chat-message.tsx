@@ -3,7 +3,7 @@ import { Pin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { PreparedMessage } from "@/lib/community/prepare-messages";
 import { Reactions } from "./reactions";
-import { Attachment } from "./attachment";
+import { Attachment } from "@/components/chat/attachment";
 
 export function ChatMessage({
   message,

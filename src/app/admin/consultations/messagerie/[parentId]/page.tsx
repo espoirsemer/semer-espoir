@@ -4,6 +4,7 @@ import { Hourglass } from "lucide-react";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getAuthorNames } from "@/lib/get-author-names";
+import { getSignedAttachmentUrls } from "@/lib/get-signed-attachment-urls";
 import type { ConsultationBooking, ConsultationSlot, SpecialistMessage } from "@/types/database.types";
 import { SpecialistThread } from "@/components/consultations/specialist-thread";
 import { ReplyForm } from "../reply-form";
@@ -43,6 +44,8 @@ export default async function AdminConversationPage({
 
   const messageList = (messages as SpecialistMessage[] | null) ?? [];
   const names = await getAuthorNames(supabase, [parentId]);
+  const attachmentPaths = messageList.map((m) => m.attachment_path).filter((p): p is string => !!p);
+  const attachmentUrls = await getSignedAttachmentUrls(attachmentPaths);
 
   const bookingList = (
     (bookings as (ConsultationBooking & { slot: ConsultationSlot | null })[] | null) ?? []
@@ -86,6 +89,7 @@ export default async function AdminConversationPage({
           viewerId={admin.id}
           resolveOtherName={(senderId) => names.get(senderId)}
           otherFallback="Parent"
+          attachmentUrls={attachmentUrls}
         />
         <ReplyForm parentId={parentId} />
       </div>

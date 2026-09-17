@@ -60,14 +60,14 @@ export function Pricing({ plans }: { plans: SubscriptionPlan[] }) {
             rel="noopener noreferrer"
             className={cn(buttonVariants({ variant: "default" }), "mt-7 w-full")}
           >
-            Rejoindre {plan.name}
+            Rejoindre la communauté
           </a>
         ) : (
           <Link
             href={ctaHref}
             className={cn(buttonVariants({ variant: "default" }), "mt-7 w-full")}
           >
-            Rejoindre {plan.name}
+            Rejoindre la communauté
           </Link>
         )}
       </motion.div>

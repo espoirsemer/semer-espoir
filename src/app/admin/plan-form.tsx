@@ -60,9 +60,10 @@ export function PlanForm({ plan }: { plan: SubscriptionPlan }) {
               defaultValue={plan.payment_link ?? ""}
             />
             <p className="text-xs text-muted-foreground">
-              Si renseigné, le bouton &laquo;&nbsp;Rejoindre {plan.name}&nbsp;&raquo;
-              de la landing page y renvoie directement (nouvel onglet). Sinon,
-              il renvoie vers la page d&apos;inscription.
+              Si renseigné, le bouton &laquo;&nbsp;Rejoindre la
+              communauté&nbsp;&raquo; de la landing page y renvoie
+              directement (nouvel onglet). Sinon, il renvoie vers la page
+              d&apos;inscription.
             </p>
           </div>
           {state && state !== "success" && (

@@ -60,9 +60,9 @@ export default async function AdminChannelPage({
   const typedChannel = channel as CommunityChannel;
 
   return (
-    <div className="space-y-6">
+    <div className="flex h-full flex-col gap-6">
       <AutoRefresh />
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex shrink-0 items-start justify-between gap-4">
         <div>
           <Link
             href="/admin/communaute"
@@ -85,13 +85,15 @@ export default async function AdminChannelPage({
         />
       </div>
 
-      <ChatThread
-        messages={preparedMessages}
-        channelId={typedChannel.id}
-        channelSlug={slug}
-        canPost
-        showModeration
-      />
+      <div className="min-h-0 flex-1">
+        <ChatThread
+          messages={preparedMessages}
+          channelId={typedChannel.id}
+          channelSlug={slug}
+          canPost
+          showModeration
+        />
+      </div>
     </div>
   );
 }

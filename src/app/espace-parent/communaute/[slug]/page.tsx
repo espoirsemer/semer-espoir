@@ -61,9 +61,9 @@ export default async function ChannelPage({
   const canPost = profile.role === "admin" || !typedChannel.locked;
 
   return (
-    <div className="space-y-6">
+    <div className="flex h-full flex-col gap-6">
       <AutoRefresh />
-      <div>
+      <div className="shrink-0">
         <Link
           href="/espace-parent/communaute"
           className="text-sm text-muted-foreground hover:text-foreground"
@@ -84,19 +84,21 @@ export default async function ChannelPage({
         )}
       </div>
 
-      <ChatThread
-        messages={preparedMessages}
-        channelId={typedChannel.id}
-        channelSlug={slug}
-        canPost={canPost}
-        lockedNotice={
-          <>
-            <Lock className="size-4" />
-            La spécialiste a verrouillé ce canal : seuls les administrateurs
-            peuvent écrire pour l&apos;instant.
-          </>
-        }
-      />
+      <div className="min-h-0 flex-1">
+        <ChatThread
+          messages={preparedMessages}
+          channelId={typedChannel.id}
+          channelSlug={slug}
+          canPost={canPost}
+          lockedNotice={
+            <>
+              <Lock className="size-4" />
+              La spécialiste a verrouillé ce canal : seuls les administrateurs
+              peuvent écrire pour l&apos;instant.
+            </>
+          }
+        />
+      </div>
     </div>
   );
 }

@@ -16,7 +16,7 @@ const fadeUp = {
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-stone-50 dark:bg-stone-950">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,var(--color-border)_1px,transparent_0)] bg-[size:32px_32px] opacity-40 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,black,transparent)]" />
         <motion.div
           animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
@@ -26,7 +26,7 @@ export function Hero() {
         <motion.div
           animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-10 -right-32 size-[32rem] rounded-full bg-orange-200/40 blur-3xl dark:bg-orange-900/15"
+          className="absolute top-10 -right-32 size-[32rem] rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-900/15"
         />
       </div>
 
@@ -39,7 +39,7 @@ export function Hero() {
         >
           <motion.div
             variants={fadeUp}
-            className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-sm text-amber-800 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200"
+            className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-sm text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200"
           >
             <Sprout className="size-4" />
             Formation, communauté et suivi pour les familles d&apos;enfants à besoins spécifiques
@@ -47,9 +47,10 @@ export function Hero() {
 
           <motion.h1
             variants={fadeUp}
-            className="mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-6xl"
+            className="font-heading mt-6 text-4xl font-semibold tracking-tight text-balance sm:text-6xl"
           >
-            Vous n&apos;avez pas à traverser ça seul&#8239;·&#8239;e
+            Vous n&apos;avez pas à traverser ça{" "}
+            <span className="text-amber-700 dark:text-amber-400">seul&#8239;·&#8239;e</span>
           </motion.h1>
 
           <motion.p

@@ -2,24 +2,29 @@
 
 import { motion } from "motion/react";
 import { CloudRain, EarOff, HelpCircle, Users2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Reveal } from "./reveal";
 
 const STATEMENTS = [
   {
     icon: EarOff,
     text: "Vous cherchez des réponses concrètes, pas juste de la théorie.",
+    tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
   },
   {
     icon: CloudRain,
     text: "Vous vous sentez seul·e face aux crises, aux regards, à l'incompréhension.",
+    tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
   },
   {
     icon: HelpCircle,
     text: "Vous ne savez jamais si ce que vous faites au quotidien est vraiment adapté.",
+    tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
   },
   {
     icon: Users2,
     text: "Vous aimeriez qu'une spécialiste suive vraiment l'évolution de votre enfant.",
+    tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
   },
 ];
 
@@ -28,7 +33,7 @@ export function PainPoints() {
     <section className="bg-muted/30">
       <div className="mx-auto max-w-5xl px-6 py-20 sm:py-28">
         <Reveal>
-          <h2 className="text-center text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="font-heading text-center text-2xl font-semibold tracking-tight sm:text-3xl">
             Est-ce que ça vous parle ?
           </h2>
         </Reveal>
@@ -50,7 +55,7 @@ export function PainPoints() {
               whileHover={{ y: -4 }}
               className="flex items-start gap-4 rounded-2xl border border-border/60 bg-background p-6 shadow-sm transition-shadow hover:shadow-md"
             >
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-muted text-amber-700 dark:text-amber-400">
+              <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", item.tint)}>
                 <item.icon className="size-5" />
               </div>
               <p className="pt-1.5 text-lg">{item.text}</p>

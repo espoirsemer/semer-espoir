@@ -16,6 +16,7 @@ const MODULES = [
       "Routines visuelles et plannings à pictogrammes prêts à imprimer",
       "Suivi de votre progression module par module",
     ],
+    tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
   },
   {
     icon: Users,
@@ -27,6 +28,7 @@ const MODULES = [
       "Fils de discussion et petites victoires du quotidien",
       "Lives Q&A avec la spécialiste (bientôt disponible)",
     ],
+    tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
   },
   {
     icon: NotebookPen,
@@ -38,6 +40,7 @@ const MODULES = [
       "Courbes de tendance sur le mois",
       "Analyse par la spécialiste avant vos consultations (bientôt disponible)",
     ],
+    tint: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-400",
   },
 ];
 
@@ -46,7 +49,7 @@ export function ModulesShowcase() {
     <section id="modules" className="relative overflow-hidden bg-muted/30">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
             Ce que vous trouverez dans votre espace
           </h2>
         </Reveal>
@@ -72,21 +75,21 @@ export function ModulesShowcase() {
               )}
             >
               <div className="flex items-center justify-between">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-muted text-amber-700 dark:text-amber-400">
+                <div className={cn("flex size-11 items-center justify-center rounded-xl", module.tint)}>
                   <module.icon className="size-5.5" />
                 </div>
                 <span className="font-mono text-xs text-muted-foreground/70 tabular-nums">
                   0{i + 1}
                 </span>
               </div>
-              <h3 className="mt-5 text-lg font-medium">{module.title}</h3>
+              <h3 className="font-heading mt-5 text-lg font-medium">{module.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">
                 {module.description}
               </p>
               <ul className="mt-5 space-y-2.5 border-t border-border/60 pt-5">
                 {module.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
-                    <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                    <Check className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
                     <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}

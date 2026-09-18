@@ -13,10 +13,10 @@ export function AboutCentre() {
   return (
     <section className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
       <Reveal className="mx-auto max-w-2xl text-center">
-        <p className="text-sm font-medium tracking-wide text-amber-700 uppercase dark:text-amber-400">
+        <p className="text-sm font-medium tracking-wide text-emerald-700 uppercase dark:text-emerald-400">
           Le centre derrière Semer Espoir
         </p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+        <h2 className="font-heading mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
           La Classe Spécialisée ANLE
         </h2>
         <p className="mt-3 text-muted-foreground">
@@ -52,7 +52,7 @@ export function AboutCentre() {
           <ul className="mt-3 space-y-2">
             {AUDIENCES.map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-amber-600" />
+                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-emerald-600" />
                 {item}
               </li>
             ))}
@@ -60,19 +60,19 @@ export function AboutCentre() {
 
           <div className="mt-7 grid gap-3 border-t border-border/60 pt-6 sm:grid-cols-2">
             <div className="flex items-start gap-2.5 text-sm">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+              <MapPin className="mt-0.5 size-4 shrink-0 text-emerald-700 dark:text-emerald-400" />
               <span className="text-muted-foreground">
                 Ndogpassi II, Douala — Cameroun
               </span>
             </div>
             <div className="flex items-start gap-2.5 text-sm">
-              <Clock className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+              <Clock className="mt-0.5 size-4 shrink-0 text-emerald-700 dark:text-emerald-400" />
               <span className="text-muted-foreground">
                 Lundi – vendredi, 7h30 – 13h00
               </span>
             </div>
             <div className="flex items-start gap-2.5 text-sm sm:col-span-2">
-              <Phone className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+              <Phone className="mt-0.5 size-4 shrink-0 text-emerald-700 dark:text-emerald-400" />
               <span className="text-muted-foreground">
                 (+237) 695 52 13 00 · (+237) 683 23 72 38
               </span>

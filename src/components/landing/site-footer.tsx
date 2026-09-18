@@ -1,26 +1,33 @@
 import Link from "next/link";
+import { Sprout } from "lucide-react";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/60">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted-foreground">
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} Semer Espoir — Centre ANLE. Tous droits réservés.</p>
-          <div className="flex gap-6">
-            <Link href="/connexion" className="hover:text-foreground">
+    <footer className="bg-stone-950 text-stone-400">
+      <div className="mx-auto max-w-6xl px-6 py-12 text-sm">
+        <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
+          <div className="flex items-center gap-2 text-stone-100">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-amber-500/15 text-amber-400">
+              <Sprout className="size-4" />
+            </span>
+            <span className="font-heading text-base font-medium">Semer Espoir</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            <Link href="/connexion" className="transition-colors hover:text-stone-100">
               Connexion
             </Link>
-            <Link href="/inscription" className="hover:text-foreground">
+            <Link href="/inscription" className="transition-colors hover:text-stone-100">
               Inscription
             </Link>
-            <a href="tel:+237695521300" className="hover:text-foreground">
+            <a href="tel:+237695521300" className="transition-colors hover:text-stone-100">
               (+237) 695 52 13 00
             </a>
           </div>
         </div>
-        <p className="mt-3 text-center text-xs text-muted-foreground/80 sm:text-left">
-          Ndogpassi II, Douala — Cameroun
-        </p>
+        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-stone-800 pt-6 text-xs text-stone-500 sm:flex-row">
+          <p>© {new Date().getFullYear()} Semer Espoir — Centre ANLE. Tous droits réservés.</p>
+          <p>Ndogpassi II, Douala — Cameroun</p>
+        </div>
       </div>
     </footer>
   );

@@ -31,15 +31,38 @@ export async function signUp(_prevState: string | null, formData: FormData) {
   // Brevo n'est pas encore configuré ou échoue, l'inscription elle-même ne
   // doit surtout pas être bloquée.
   try {
+    const loginUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/connexion`;
     await sendTransactionalEmail({
       to: [{ email, name: fullName }],
       subject: "Bienvenue sur Semer Espoir",
       htmlContent: `
-        <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; color: #292524;">
-          <h1 style="font-size: 20px;">Bienvenue, ${fullName} !</h1>
-          <p>Merci de rejoindre Semer Espoir. Un e-mail de confirmation vous a été envoyé séparément — cliquez sur son lien pour activer votre compte.</p>
-          <p>Une fois votre compte activé, vous retrouverez dans votre espace parent : le hub de contenu, la communauté, le journal de bord, et bien plus.</p>
-          <p>À très vite,<br />L'équipe Semer Espoir</p>
+        <div style="background-color: #0f172a; padding: 32px 16px; font-family: 'Segoe UI', Arial, sans-serif;">
+          <div style="max-width: 480px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden;">
+            <div style="background-color: #0f172a; padding: 24px 32px;">
+              <p style="margin: 0; font-size: 18px; font-weight: 700; color: #ffffff; letter-spacing: 0.02em;">Semer Espoir</p>
+            </div>
+            <div style="padding: 32px; color: #1c1917;">
+              <h1 style="font-size: 20px; margin: 0 0 16px;">Bienvenue, ${fullName} !</h1>
+              <p style="font-size: 15px; line-height: 1.6; margin: 0 0 16px;">
+                Merci de rejoindre Semer Espoir. Un e-mail de confirmation distinct vous a aussi été envoyé — cliquez sur son lien pour activer votre compte, puis accédez à votre espace parent :
+              </p>
+              <div style="text-align: center; margin: 28px 0;">
+                <a href="${loginUrl}" style="display: inline-block; background-color: #84cc16; color: #0f172a; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 8px; text-decoration: none;">
+                  Accéder à mon espace parent
+                </a>
+              </div>
+              <p style="font-size: 15px; line-height: 1.6; margin: 0 0 8px;">
+                Vous y retrouverez : le hub de contenu, la communauté, le journal de bord, et bien plus.
+              </p>
+              <p style="font-size: 13px; color: #78716c; margin: 24px 0 0;">
+                Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br />
+                <a href="${loginUrl}" style="color: #65a30d;">${loginUrl}</a>
+              </p>
+            </div>
+            <div style="padding: 16px 32px; background-color: #f5f5f4; text-align: center;">
+              <p style="font-size: 12px; color: #a8a29e; margin: 0;">À très vite,<br />L'équipe Semer Espoir</p>
+            </div>
+          </div>
         </div>
       `,
     });

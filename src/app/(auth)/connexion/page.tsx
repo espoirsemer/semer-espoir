@@ -15,7 +15,25 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
-import { signIn } from "./actions";
+import { signIn, resendConfirmation } from "./actions";
+
+function ResendConfirmation({ email }: { email: string }) {
+  const [state, formAction, isPending] = useActionState(resendConfirmation, null);
+
+  return (
+    <form action={formAction} className="flex flex-col items-start gap-2">
+      <input type="hidden" name="email" value={email} />
+      <Button type="submit" variant="outline" size="sm" disabled={isPending}>
+        {isPending ? "Envoi..." : "Renvoyer l'e-mail de confirmation"}
+      </Button>
+      {state && (
+        <p className={`text-sm ${state.success ? "text-emerald-500" : "text-destructive"}`}>
+          {state.message}
+        </p>
+      )}
+    </form>
+  );
+}
 
 // Le lien de confirmation d'inscription revient ici avec la session dans le
 // fragment d'URL (#access_token=...&refresh_token=...), lisible seulement
@@ -96,7 +114,7 @@ export default function ConnexionPage() {
               autoComplete="current-password"
             />
           </div>
-          {error && <p className="text-sm text-destructive">{error}</p>}
+          {error && <p className="text-sm text-destructive">{error.message}</p>}
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <Button type="submit" className="w-full" disabled={isPending}>
@@ -110,6 +128,11 @@ export default function ConnexionPage() {
           </p>
         </CardFooter>
       </form>
+      {error?.needsConfirmation && error.email && (
+        <CardFooter>
+          <ResendConfirmation email={error.email} />
+        </CardFooter>
+      )}
     </Card>
   );
 }

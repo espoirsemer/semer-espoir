@@ -30,7 +30,7 @@ export function PurchaseFormationDialog({ formation }: { formation: ResourceForm
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button className="mt-4 w-full" />}>S&apos;inscrire</DialogTrigger>
+      <DialogTrigger render={<Button className="mt-4 w-full" />}>Acheter</DialogTrigger>
       <DialogContent>
         <form action={formAction}>
           <input type="hidden" name="formation_key" value={formation.key} />

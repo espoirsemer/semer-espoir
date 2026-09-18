@@ -6,7 +6,7 @@ export const RESOURCE_FORMATION_ORDER: ResourceFormationKey[] = ["nutrition", "m
 const FALLBACK_NAMES: Record<ResourceFormationKey, string> = {
   nutrition: "Livres pour nutrition",
   massage: "Massage",
-  langage: "Langage (apprendre à parler)",
+  langage: "Language (apprendre à parler)",
 };
 
 export async function getResourceFormations(): Promise<ResourceFormation[]> {

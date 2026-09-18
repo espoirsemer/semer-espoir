@@ -14,7 +14,12 @@ export async function signUp(_prevState: string | null, formData: FormData) {
     password,
     options: {
       data: { full_name: fullName },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/espace-parent`,
+      // Redirige vers /connexion (page publique) et non /espace-parent
+      // directement : le lien de confirmation revient avec la session dans
+      // le fragment d'URL (#access_token=...), invisible du serveur. Si la
+      // cible était une route protégée, le middleware redirigerait vers la
+      // connexion AVANT même que le JS client n'ait pu lire ce fragment.
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/connexion`,
     },
   });
 

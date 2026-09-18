@@ -23,36 +23,38 @@ import { signIn } from "./actions";
 // parent, sans lui faire retaper son mot de passe.
 function useSessionFromEmailLink() {
   const router = useRouter();
-  const [confirming, setConfirming] = useState(() =>
-    typeof window !== "undefined" && window.location.hash.includes("access_token"),
-  );
+  // Démarre toujours à false, identique côté serveur et côté client : lire
+  // window.location.hash dans l'état initial provoquerait un mismatch
+  // d'hydratation (le serveur ne voit jamais ce hash). La détection se fait
+  // uniquement après le montage, via l'effet ci-dessous.
+  const [confirming, setConfirming] = useState(false);
 
   useEffect(() => {
-    if (!confirming) return;
+    // Tout passe par une microtâche pour que chaque mise à jour d'état
+    // reste asynchrone par rapport au corps de l'effet.
+    Promise.resolve().then(async () => {
+      if (!window.location.hash.includes("access_token")) return;
+      setConfirming(true);
 
-    async function establishSession() {
       const params = new URLSearchParams(window.location.hash.slice(1));
       const access_token = params.get("access_token");
       const refresh_token = params.get("refresh_token");
       window.history.replaceState(null, "", window.location.pathname + window.location.search);
 
       if (!access_token || !refresh_token) {
-        return false;
+        setConfirming(false);
+        return;
       }
 
       const supabase = createClient();
       const { error } = await supabase.auth.setSession({ access_token, refresh_token });
-      return !error;
-    }
-
-    establishSession().then((success) => {
-      if (success) {
-        router.replace("/espace-parent");
-      } else {
+      if (error) {
         setConfirming(false);
+        return;
       }
+      router.replace("/espace-parent");
     });
-  }, [confirming, router]);
+  }, [router]);
 
   return confirming;
 }

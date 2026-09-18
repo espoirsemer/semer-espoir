@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import type { PreparedMessage } from "@/lib/community/prepare-messages";
 import { Reactions } from "./reactions";
 import { Attachment } from "@/components/chat/attachment";
+import { linkify } from "@/lib/linkify";
 
 export function ChatMessage({
   message,
@@ -72,7 +73,9 @@ export function ChatMessage({
             />
           </div>
         )}
-        {message.body && <p className="whitespace-pre-wrap break-words">{message.body}</p>}
+        {message.body && (
+          <p className="whitespace-pre-wrap break-words">{linkify(message.body)}</p>
+        )}
         <span className="mt-1 block text-right text-[10px] opacity-70">
           {new Date(message.createdAt).toLocaleTimeString("fr-FR", {
             hour: "2-digit",

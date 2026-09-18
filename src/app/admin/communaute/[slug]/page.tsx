@@ -97,6 +97,7 @@ export default async function AdminChannelPage({
           channelSlug={slug}
           canPost
           showModeration
+          showCallButton
         />
       </div>
     </div>

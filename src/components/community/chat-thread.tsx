@@ -16,6 +16,7 @@ export function ChatThread({
   canPost,
   lockedNotice,
   showModeration = false,
+  showCallButton = false,
 }: {
   messages: PreparedMessage[];
   channelId: string;
@@ -23,6 +24,7 @@ export function ChatThread({
   canPost: boolean;
   lockedNotice?: ReactNode;
   showModeration?: boolean;
+  showCallButton?: boolean;
 }) {
   const [replyingTo, setReplyingTo] = useState<ReplyTarget | null>(null);
 
@@ -71,6 +73,7 @@ export function ChatThread({
                 channelSlug={channelSlug}
                 replyingTo={replyingTo}
                 onCancelReply={() => setReplyingTo(null)}
+                showCallButton={showCallButton}
               />
             ) : (
               lockedNotice

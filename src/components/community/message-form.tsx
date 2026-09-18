@@ -6,6 +6,7 @@ import { postMessage } from "@/lib/community/actions";
 import { AttachmentMenu } from "@/components/chat/attachment-menu";
 import { CameraCaptureDialog } from "@/components/chat/camera-capture-dialog";
 import { VoiceRecorderButton } from "@/components/chat/voice-recorder-button";
+import { CallButton } from "@/components/chat/call-button";
 import type { ReplyTarget } from "./chat-thread";
 
 export function MessageForm({
@@ -14,12 +15,14 @@ export function MessageForm({
   replyingTo,
   onCancelReply,
   placeholder = "Écrivez un message…",
+  showCallButton = false,
 }: {
   channelId: string;
   channelSlug: string;
   replyingTo?: ReplyTarget | null;
   onCancelReply?: () => void;
   placeholder?: string;
+  showCallButton?: boolean;
 }) {
   const [state, formAction, isPending] = useActionState(postMessage, null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -49,6 +52,14 @@ export function MessageForm({
   function clearFile() {
     setFileName(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleCall(body: string) {
+    const fd = new FormData();
+    fd.set("channel_id", channelId);
+    fd.set("channel_slug", channelSlug);
+    fd.set("body", body);
+    await postMessage(null, fd);
   }
 
   const buttonSize = 40;
@@ -112,6 +123,7 @@ export function MessageForm({
           className="max-h-32 flex-1 resize-none rounded-3xl border border-border/60 bg-background px-4 py-2.5 text-sm shadow-sm outline-none focus:border-amber-400"
         />
         <VoiceRecorderButton onRecorded={handleVoiceRecorded} size={buttonSize} />
+        {showCallButton && <CallButton roomId={`canal-${channelId}`} onCall={handleCall} />}
         <button
           type="submit"
           disabled={isPending}

@@ -6,7 +6,7 @@ import { sendMessageToSpecialist } from "@/lib/consultations/messagerie-actions"
 import { AttachmentMenu } from "@/components/chat/attachment-menu";
 import { CameraCaptureDialog } from "@/components/chat/camera-capture-dialog";
 import { VoiceRecorderButton } from "@/components/chat/voice-recorder-button";
-import { CallButton } from "@/components/consultations/call-button";
+import { CallButton } from "@/components/chat/call-button";
 
 export function MessageForm({ parentId }: { parentId: string }) {
   const [state, formAction, isPending] = useActionState(sendMessageToSpecialist, null);
@@ -82,7 +82,7 @@ export function MessageForm({ parentId }: { parentId: string }) {
           className="max-h-32 flex-1 resize-none rounded-3xl border border-border/60 bg-background px-4 py-2.5 text-sm shadow-sm outline-none focus:border-amber-400"
         />
         <VoiceRecorderButton onRecorded={handleVoiceRecorded} size={buttonSize} />
-        <CallButton parentId={parentId} onCall={handleCall} />
+        <CallButton roomId={`consult-${parentId}`} onCall={handleCall} />
         <button
           type="submit"
           disabled={isPending}

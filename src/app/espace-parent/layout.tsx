@@ -7,6 +7,7 @@ import {
   NotebookPen,
   UserRound,
   ShieldCheck,
+  HeartHandshake,
 } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { CommunityNotifier } from "@/components/community/community-notifier";
@@ -19,6 +20,11 @@ const PARENT_NAV = [
   { href: "/espace-parent/communaute", label: "Communauté", icon: <MessagesSquare /> },
   { href: "/espace-parent/lives", label: "Lives Q&A", icon: <Video /> },
   { href: "/espace-parent/consultations", label: "Consultations", icon: <CalendarClock /> },
+  {
+    href: "/espace-parent/prise-en-charge",
+    label: "Prise en charge à distance",
+    icon: <HeartHandshake />,
+  },
   { href: "/espace-parent/journal", label: "Journal de bord", icon: <NotebookPen /> },
   { href: "/espace-parent/profil", label: "Profil de l'enfant", icon: <UserRound /> },
 ];

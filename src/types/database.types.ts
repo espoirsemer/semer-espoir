@@ -146,6 +146,33 @@ export interface ConsultationFee {
   updated_at: string;
 }
 
+export type RemoteCareCondition = "autisme" | "imc";
+export type RemoteCareStatus = "pending" | "confirmed";
+
+export interface RemoteCarePricing {
+  id: true;
+  fee_autisme: number;
+  fee_imc: number;
+  currency: string;
+  payment_link: string | null;
+  updated_at: string;
+}
+
+export interface RemoteCareRequest {
+  id: string;
+  parent_id: string;
+  child_id: string | null;
+  condition: RemoteCareCondition;
+  amount: number;
+  currency: string;
+  notes: string | null;
+  payment_reference: string | null;
+  payment_confirmed: boolean;
+  status: RemoteCareStatus;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface LiveSession {
   id: string;
   title: string;

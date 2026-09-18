@@ -34,10 +34,10 @@ export function Pricing({ plans }: { plans: SubscriptionPlan[] }) {
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.5 }}
         whileHover={{ y: -6 }}
-        className="mx-auto mt-14 max-w-md rounded-[28px] bg-gradient-to-br from-amber-400 via-amber-500 to-emerald-600 p-[1.5px] shadow-xl shadow-amber-900/10"
+        className="mx-auto mt-14 max-w-md rounded-[28px] bg-gradient-to-br from-amber-400 via-lime-400 to-lime-500 p-[1.5px] shadow-xl shadow-black/30"
       >
         <div className="flex h-full flex-col rounded-[26.5px] bg-background p-8">
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-800 dark:bg-amber-950/50 dark:text-amber-300">
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-lime-500/15 px-2.5 py-1 text-xs font-medium text-lime-400">
             <Sparkles className="size-3.5" />
             Formule unique
           </span>
@@ -51,7 +51,7 @@ export function Pricing({ plans }: { plans: SubscriptionPlan[] }) {
           <ul className="mt-6 flex-1 space-y-2.5">
             {meta.features.map((feature) => (
               <li key={feature} className="flex items-start gap-2 text-sm">
-                <Check className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                <Check className="mt-0.5 size-4 shrink-0 text-lime-400" />
                 <span className="text-muted-foreground">{feature}</span>
               </li>
             ))}

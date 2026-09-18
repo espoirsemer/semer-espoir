@@ -33,7 +33,7 @@ export function SiteHeader() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="font-heading flex items-center gap-2 text-lg font-semibold tracking-tight">
-          <span className="flex size-7 items-center justify-center rounded-lg bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-lime-500/15 text-lime-400">
             <Sprout className="size-4" />
           </span>
           Semer Espoir

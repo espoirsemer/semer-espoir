@@ -45,7 +45,7 @@ export default async function AdminLivesPage() {
                 <CardContent className="space-y-2 pt-6">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-start gap-2.5">
-                      <Video className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                      <Video className="mt-0.5 size-4 shrink-0 text-amber-400" />
                       <div>
                         <p className="text-sm font-medium">{live.title}</p>
                         <p className="text-xs text-muted-foreground">
@@ -68,7 +68,7 @@ export default async function AdminLivesPage() {
                     href={live.meeting_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-6 flex items-center gap-1.5 text-sm text-amber-700 underline underline-offset-4 dark:text-amber-400"
+                    className="ml-6 flex items-center gap-1.5 text-sm text-amber-400 underline underline-offset-4"
                   >
                     <Copy className="size-3.5" />
                     {live.meeting_url}

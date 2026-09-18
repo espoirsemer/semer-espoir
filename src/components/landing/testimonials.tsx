@@ -8,7 +8,7 @@ const PLACEHOLDER_COUNT = 3;
 
 export function Testimonials() {
   return (
-    <section className="bg-gradient-to-b from-amber-50 via-stone-50 to-stone-50 dark:from-amber-950/15 dark:via-stone-950 dark:to-stone-950">
+    <section className="bg-black/20">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -38,7 +38,7 @@ export function Testimonials() {
               className="flex flex-col rounded-2xl border border-dashed border-border bg-background p-6 shadow-sm"
             >
               <div className="flex items-center justify-between">
-                <Quote className="size-6 text-emerald-600 dark:text-emerald-400" />
+                <Quote className="size-6 text-lime-400" />
                 <div className="flex gap-0.5">
                   {Array.from({ length: 5 }).map((_, s) => (
                     <Star key={s} className="size-3.5 fill-amber-400 text-amber-400" />

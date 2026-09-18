@@ -16,7 +16,7 @@ export function HeroPhoto() {
       <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-2xl shadow-stone-900/15"
+        className="overflow-hidden rounded-2xl border border-border/60 bg-muted shadow-2xl shadow-black/40"
       >
         <Image
           src="/images/hero-enfants.jpg"
@@ -39,7 +39,7 @@ export function HeroPhoto() {
         className="absolute -right-2 -bottom-6 w-48 rounded-xl border border-border/60 bg-background p-3.5 shadow-xl sm:-right-10 sm:-bottom-8 sm:w-56"
       >
         <div className="flex items-start gap-2">
-          <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+          <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-lime-500/15 text-lime-400">
             <MessageCircle className="size-3.5" />
           </div>
           <div>

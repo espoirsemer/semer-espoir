@@ -31,7 +31,7 @@ export function Attachment({
       href={url}
       target="_blank"
       rel="noreferrer"
-      className="flex items-center gap-2 rounded-lg border border-current/20 bg-black/5 px-3 py-2 text-sm hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/15"
+      className="flex items-center gap-2 rounded-lg border border-current/20 bg-white/10 px-3 py-2 text-sm hover:bg-white/15"
     >
       <FileText className="size-4 shrink-0" />
       <span className="truncate underline underline-offset-2">{name ?? "Document PDF"}</span>

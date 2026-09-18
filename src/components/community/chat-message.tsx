@@ -31,7 +31,7 @@ export function ChatMessage({
       <span
         className={cn(
           "px-1 text-xs font-medium",
-          message.isSpecialist ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground",
+          message.isSpecialist ? "text-lime-400" : "text-muted-foreground",
         )}
       >
         {message.isSpecialist ? `Spécialiste · ${message.authorName}` : message.authorName}
@@ -41,19 +41,19 @@ export function ChatMessage({
         className={cn(
           "relative max-w-[80%] rounded-2xl px-3.5 py-2 text-sm shadow-sm",
           message.isOwn && "rounded-br-sm bg-amber-500 text-white",
-          !message.isOwn && message.isSpecialist && "rounded-bl-sm bg-emerald-600 text-white",
+          !message.isOwn && message.isSpecialist && "rounded-bl-sm bg-lime-600 text-white",
           !message.isOwn && !message.isSpecialist && "rounded-bl-sm bg-muted text-foreground",
         )}
       >
         {message.pinned && (
-          <Pin className="absolute -top-2 -right-2 size-4 rounded-full border border-border/60 bg-background p-0.5 text-amber-600" />
+          <Pin className="absolute -top-2 -right-2 size-4 rounded-full border border-border/60 bg-background p-0.5 text-amber-400" />
         )}
 
         {message.replyTo && (
           <div
             className={cn(
               "mb-1.5 rounded-md border-l-2 px-2 py-1 text-xs",
-              tinted ? "border-white/60 bg-white/10" : "border-amber-400 bg-black/5 dark:bg-white/10",
+              tinted ? "border-white/60 bg-white/10" : "border-amber-400/60 bg-white/10",
             )}
           >
             <p className="font-medium">{message.replyTo.authorName}</p>

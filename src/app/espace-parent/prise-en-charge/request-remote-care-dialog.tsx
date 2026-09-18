@@ -94,7 +94,7 @@ export function RequestRemoteCareDialog({
               <ul className="space-y-1.5 pt-1">
                 {CONDITION_FEATURES[condition].map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
-                    <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                    <Check className="mt-0.5 size-4 shrink-0 text-amber-400" />
                     <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}
@@ -124,7 +124,7 @@ export function RequestRemoteCareDialog({
           </div>
 
           <div className={cn("space-y-4 py-2", step !== "payment" && "hidden")}>
-            <div className="rounded-lg border border-amber-300 bg-amber-50/60 p-4 dark:border-amber-800 dark:bg-amber-950/20">
+            <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
               <p className="text-sm font-medium">
                 Frais de prise en charge ({condition === "autisme" ? "Autisme" : "IMC"}) :{" "}
                 {formattedAmount} {pricing.currency}

@@ -37,7 +37,7 @@ export function Reactions({
           className={cn(
             "flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs transition-colors",
             myReaction === emoji
-              ? "border-amber-400 bg-amber-100 dark:border-amber-700 dark:bg-amber-950/50"
+              ? "border-amber-400/50 bg-amber-500/15"
               : "border-border/60 bg-background hover:bg-accent",
           )}
         >

@@ -59,7 +59,7 @@ export default async function PriseEnChargePage() {
             <ul className="mt-4 space-y-2">
               {CONDITION_FEATURES.autisme.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
-                  <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <Check className="mt-0.5 size-4 shrink-0 text-amber-400" />
                   <span className="text-muted-foreground">{feature}</span>
                 </li>
               ))}
@@ -75,7 +75,7 @@ export default async function PriseEnChargePage() {
             <ul className="mt-4 space-y-2">
               {CONDITION_FEATURES.imc.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
-                  <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <Check className="mt-0.5 size-4 shrink-0 text-amber-400" />
                   <span className="text-muted-foreground">{feature}</span>
                 </li>
               ))}

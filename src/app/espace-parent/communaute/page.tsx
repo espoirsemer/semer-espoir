@@ -39,7 +39,7 @@ export default async function CommunautePage() {
               <Card className="h-full transition-colors hover:bg-accent">
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <Hash className="size-4 text-amber-600 dark:text-amber-400" />
+                    <Hash className="size-4 text-amber-400" />
                     <CardTitle>{channel.name}</CardTitle>
                     {channel.locked && (
                       <Badge variant="secondary" className="gap-1">

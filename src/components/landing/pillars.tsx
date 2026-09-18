@@ -11,27 +11,27 @@ const PILLARS = [
     title: "Vous former",
     description:
       "Des vidéos et des ressources terrain conçues par l'équipe du centre ANLE, pour agir avec des outils qui fonctionnent vraiment.",
-    tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
-    dot: "bg-amber-600",
-    card: "border-amber-200/70 bg-amber-50/60 dark:border-amber-900/50 dark:bg-amber-950/10",
+    tint: "bg-amber-500/15 text-amber-400",
+    dot: "bg-amber-500 text-[oklch(0.15_0.03_258)]",
+    card: "border-amber-500/25 bg-amber-500/5",
   },
   {
     icon: MessagesSquare,
     title: "Ne plus être seul·e",
     description:
       "Une communauté privée de parents qui vivent la même chose que vous, organisée par sujets : sommeil, alimentation, scolarité, petites victoires.",
-    tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
-    dot: "bg-emerald-700",
-    card: "border-emerald-200/70 bg-emerald-50/60 dark:border-emerald-900/50 dark:bg-emerald-950/10",
+    tint: "bg-lime-500/15 text-lime-400",
+    dot: "bg-lime-500 text-[oklch(0.15_0.03_258)]",
+    card: "border-lime-500/25 bg-lime-500/5",
   },
   {
     icon: LineChart,
     title: "Suivre les progrès",
     description:
       "Un journal de bord quotidien qui prend moins d'une minute, et qui révèle des tendances utiles pour vous et pour la spécialiste.",
-    tint: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300",
-    dot: "bg-sky-700",
-    card: "border-sky-200/70 bg-sky-50/60 dark:border-sky-900/50 dark:bg-sky-950/10",
+    tint: "bg-sky-500/15 text-sky-400",
+    dot: "bg-sky-500 text-[oklch(0.15_0.03_258)]",
+    card: "border-sky-500/25 bg-sky-500/5",
   },
 ];
 
@@ -79,7 +79,7 @@ export function Pillars() {
                 <pillar.icon className="size-7" />
                 <span
                   className={cn(
-                    "absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full text-[11px] font-semibold text-white",
+                    "absolute -top-2 -right-2 flex size-5 items-center justify-center rounded-full text-[11px] font-semibold",
                     pillar.dot,
                   )}
                 >

@@ -43,7 +43,7 @@ export default async function AdminCommunautePage() {
                   href={`/admin/communaute/${channel.slug}`}
                   className="flex items-center gap-2 hover:underline"
                 >
-                  <Hash className="size-4 text-amber-600 dark:text-amber-400" />
+                  <Hash className="size-4 text-amber-400" />
                   <CardTitle>{channel.name}</CardTitle>
                   {channel.locked && (
                     <Badge variant="secondary" className="gap-1">

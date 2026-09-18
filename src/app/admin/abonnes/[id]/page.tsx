@@ -164,7 +164,7 @@ export default async function AdminAbonneDetailPage({
 
                 <div className="space-y-3 border-t border-border/60 pt-4">
                   <div className="flex items-center gap-2">
-                    <NotebookText className="size-4 text-amber-600 dark:text-amber-400" />
+                    <NotebookText className="size-4 text-amber-400" />
                     <p className="text-sm font-medium">Dossier clinique</p>
                   </div>
 

@@ -115,7 +115,7 @@ export default async function AdminConsultationsPage() {
                       <CardContent className="flex items-start justify-between gap-3 pt-6">
                         <div className="space-y-1.5">
                           <div className="flex items-center gap-2">
-                            <Clock className="size-4 text-amber-600 dark:text-amber-400" />
+                            <Clock className="size-4 text-amber-400" />
                             <p className="text-sm font-medium">{formatSlot(slot)}</p>
                           </div>
                           {booking ? (
@@ -136,7 +136,7 @@ export default async function AdminConsultationsPage() {
                               {booking.status === "confirmed" && booking.child_id && (
                                 <Link
                                   href={`/admin/abonnes/${booking.parent_id}?child=${booking.child_id}&booking=${booking.id}#enfant-${booking.child_id}`}
-                                  className="flex items-center gap-1 text-amber-700 hover:underline dark:text-amber-400"
+                                  className="flex items-center gap-1 text-amber-400 hover:underline"
                                 >
                                   <NotebookText className="size-3.5" />
                                   Dossier de {childNameById.get(booking.child_id) ?? "l'enfant"}

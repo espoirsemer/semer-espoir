@@ -43,7 +43,7 @@ export function PurchaseFormationDialog({ formation }: { formation: ResourceForm
           </DialogHeader>
 
           <div className="space-y-4 py-2">
-            <div className="rounded-lg border border-amber-300 bg-amber-50/60 p-4 dark:border-amber-800 dark:bg-amber-950/20">
+            <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-4">
               <p className="text-sm font-medium">
                 {formation.name} : {formattedAmount} {formation.price_currency}
               </p>

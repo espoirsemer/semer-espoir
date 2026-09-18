@@ -99,7 +99,7 @@ export default async function HubPage() {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-6 text-sm text-amber-700 underline underline-offset-4 dark:text-amber-400"
+                        className="px-6 text-sm text-amber-400 underline underline-offset-4"
                       >
                         Télécharger le PDF
                       </a>

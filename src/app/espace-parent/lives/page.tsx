@@ -67,7 +67,7 @@ export default async function LivesPage() {
             <Card key={live.id}>
               <CardContent className="space-y-3 pt-6">
                 <div className="flex items-start gap-2.5">
-                  <Video className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <Video className="mt-0.5 size-4 shrink-0 text-amber-400" />
                   <div>
                     <p className="text-sm font-medium">{live.title}</p>
                     <p className="text-xs text-muted-foreground">

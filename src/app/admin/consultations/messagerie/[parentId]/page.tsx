@@ -78,7 +78,7 @@ export default async function AdminConversationPage({
 
       <div className="flex min-h-0 flex-1 flex-col gap-4">
         {showReminder && (
-          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+          <div className="flex shrink-0 items-center gap-2 rounded-lg border border-amber-400/30 bg-amber-500/10 px-3 py-2 text-sm text-amber-300">
             <Hourglass className="size-4 shrink-0" />
             Le rendez-vous de {parentProfile.full_name ?? "ce parent"} ({formatSlot(dueBooking!.slot!)}) est
             arrivé — pensez à lancer la conversation.

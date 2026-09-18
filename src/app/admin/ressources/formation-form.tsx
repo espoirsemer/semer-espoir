@@ -81,7 +81,7 @@ export function FormationForm({ formation }: { formation: ResourceFormation }) {
           </Button>
           {state === "success" && !isPending && (
             <span className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Check className="size-4 text-amber-600 dark:text-amber-400" />
+              <Check className="size-4 text-amber-400" />
               Enregistré
             </span>
           )}

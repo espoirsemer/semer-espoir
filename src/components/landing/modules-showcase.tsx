@@ -16,7 +16,7 @@ const MODULES = [
       "Routines visuelles et plannings à pictogrammes prêts à imprimer",
       "Suivi de votre progression module par module",
     ],
-    tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+    tint: "bg-amber-500/15 text-amber-400",
     bar: "bg-amber-500",
   },
   {
@@ -29,8 +29,8 @@ const MODULES = [
       "Fils de discussion et petites victoires du quotidien",
       "Lives Q&A avec la spécialiste (bientôt disponible)",
     ],
-    tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
-    bar: "bg-emerald-600",
+    tint: "bg-lime-500/15 text-lime-400",
+    bar: "bg-lime-500",
   },
   {
     icon: NotebookPen,
@@ -42,14 +42,14 @@ const MODULES = [
       "Courbes de tendance sur le mois",
       "Analyse par la spécialiste avant vos consultations (bientôt disponible)",
     ],
-    tint: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-400",
-    bar: "bg-sky-600",
+    tint: "bg-sky-500/15 text-sky-400",
+    bar: "bg-sky-500",
   },
 ];
 
 export function ModulesShowcase() {
   return (
-    <section id="modules" className="relative overflow-hidden bg-gradient-to-b from-emerald-50 via-stone-50 to-stone-50 dark:from-emerald-950/20 dark:via-stone-950 dark:to-stone-950">
+    <section id="modules" className="relative overflow-hidden bg-black/20">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -93,7 +93,7 @@ export function ModulesShowcase() {
               <ul className="mt-5 space-y-2.5 border-t border-border/60 pt-5">
                 {module.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-2 text-sm">
-                    <Check className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                    <Check className="mt-0.5 size-4 shrink-0 text-lime-400" />
                     <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}

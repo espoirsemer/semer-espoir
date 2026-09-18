@@ -13,6 +13,7 @@ const PILLARS = [
       "Des vidéos et des ressources terrain conçues par l'équipe du centre ANLE, pour agir avec des outils qui fonctionnent vraiment.",
     tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
     dot: "bg-amber-600",
+    card: "border-amber-200/70 bg-amber-50/60 dark:border-amber-900/50 dark:bg-amber-950/10",
   },
   {
     icon: MessagesSquare,
@@ -21,6 +22,7 @@ const PILLARS = [
       "Une communauté privée de parents qui vivent la même chose que vous, organisée par sujets : sommeil, alimentation, scolarité, petites victoires.",
     tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
     dot: "bg-emerald-700",
+    card: "border-emerald-200/70 bg-emerald-50/60 dark:border-emerald-900/50 dark:bg-emerald-950/10",
   },
   {
     icon: LineChart,
@@ -29,6 +31,7 @@ const PILLARS = [
       "Un journal de bord quotidien qui prend moins d'une minute, et qui révèle des tendances utiles pour vous et pour la spécialiste.",
     tint: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300",
     dot: "bg-sky-700",
+    card: "border-sky-200/70 bg-sky-50/60 dark:border-sky-900/50 dark:bg-sky-950/10",
   },
 ];
 
@@ -46,16 +49,12 @@ export function Pillars() {
       </Reveal>
 
       <div className="relative mt-16">
-        <div
-          aria-hidden
-          className="absolute top-7 right-[16.5%] left-[16.5%] hidden border-t-2 border-dashed border-border sm:block"
-        />
         <motion.div
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-80px" }}
           variants={{ show: { transition: { staggerChildren: 0.15 } } }}
-          className="relative grid gap-10 sm:grid-cols-3"
+          className="relative grid gap-6 sm:grid-cols-3"
         >
           {PILLARS.map((pillar, i) => (
             <motion.div
@@ -64,7 +63,11 @@ export function Pillars() {
                 hidden: { opacity: 0, scale: 0.9, y: 20 },
                 show: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.5 } },
               }}
-              className="flex flex-col items-center text-center"
+              whileHover={{ y: -4 }}
+              className={cn(
+                "flex flex-col items-center rounded-3xl border p-8 text-center shadow-sm transition-shadow hover:shadow-md",
+                pillar.card,
+              )}
             >
               <motion.div
                 whileHover={{ scale: 1.08, rotate: -4 }}

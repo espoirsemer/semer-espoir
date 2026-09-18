@@ -16,17 +16,22 @@ const fadeUp = {
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-stone-50 dark:bg-stone-950">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,var(--color-border)_1px,transparent_0)] bg-[size:32px_32px] opacity-40 [mask-image:radial-gradient(ellipse_60%_60%_at_50%_0%,black,transparent)]" />
+      <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-gradient-to-br from-amber-100 via-orange-50 to-emerald-100 dark:from-stone-950 dark:via-stone-950 dark:to-emerald-950">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(120,90,40,0.15)_1px,transparent_0)] bg-[size:32px_32px]" />
         <motion.div
           animate={{ x: [0, 40, 0], y: [0, 30, 0] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-24 -left-24 size-[28rem] rounded-full bg-amber-200/50 blur-3xl dark:bg-amber-900/20"
+          className="absolute -top-24 -left-24 size-[30rem] rounded-full bg-amber-400/40 blur-3xl dark:bg-amber-700/20"
         />
         <motion.div
           animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-10 -right-32 size-[32rem] rounded-full bg-emerald-200/40 blur-3xl dark:bg-emerald-900/15"
+          className="absolute top-10 -right-32 size-[34rem] rounded-full bg-emerald-400/35 blur-3xl dark:bg-emerald-700/20"
+        />
+        <motion.div
+          animate={{ x: [0, 20, 0], y: [0, -25, 0] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-32 left-1/3 size-[26rem] rounded-full bg-orange-300/30 blur-3xl dark:bg-orange-800/15"
         />
       </div>
 
@@ -80,7 +85,7 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        <div className="hidden lg:block">
+        <div className="mt-6 lg:mt-0">
           <HeroPhoto />
         </div>
       </div>

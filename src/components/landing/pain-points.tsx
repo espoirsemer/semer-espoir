@@ -10,27 +10,31 @@ const STATEMENTS = [
     icon: EarOff,
     text: "Vous cherchez des réponses concrètes, pas juste de la théorie.",
     tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+    card: "border-amber-200/80 bg-amber-50/70 dark:border-amber-900/60 dark:bg-amber-950/20",
   },
   {
     icon: CloudRain,
     text: "Vous vous sentez seul·e face aux crises, aux regards, à l'incompréhension.",
     tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
+    card: "border-emerald-200/80 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/20",
   },
   {
     icon: HelpCircle,
     text: "Vous ne savez jamais si ce que vous faites au quotidien est vraiment adapté.",
     tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
+    card: "border-emerald-200/80 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/20",
   },
   {
     icon: Users2,
     text: "Vous aimeriez qu'une spécialiste suive vraiment l'évolution de votre enfant.",
     tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+    card: "border-amber-200/80 bg-amber-50/70 dark:border-amber-900/60 dark:bg-amber-950/20",
   },
 ];
 
 export function PainPoints() {
   return (
-    <section className="bg-muted/30">
+    <section className="bg-gradient-to-b from-stone-100 to-stone-50 dark:from-stone-900 dark:to-stone-950">
       <div className="mx-auto max-w-5xl px-6 py-20 sm:py-28">
         <Reveal>
           <h2 className="font-heading text-center text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -53,7 +57,10 @@ export function PainPoints() {
                 show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
               }}
               whileHover={{ y: -4 }}
-              className="flex items-start gap-4 rounded-2xl border border-border/60 bg-background p-6 shadow-sm transition-shadow hover:shadow-md"
+              className={cn(
+                "flex items-start gap-4 rounded-2xl border p-6 shadow-sm transition-shadow hover:shadow-md",
+                item.card,
+              )}
             >
               <div className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", item.tint)}>
                 <item.icon className="size-5" />

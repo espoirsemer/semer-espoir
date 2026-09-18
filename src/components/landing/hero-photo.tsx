@@ -36,7 +36,7 @@ export function HeroPhoto() {
           x: { duration: 0.6, delay: 0.9 },
           y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1.5 },
         }}
-        className="absolute -right-6 -bottom-8 w-56 rounded-xl border border-border/60 bg-background p-3.5 shadow-xl sm:-right-10"
+        className="absolute -right-2 -bottom-6 w-48 rounded-xl border border-border/60 bg-background p-3.5 shadow-xl sm:-right-10 sm:-bottom-8 sm:w-56"
       >
         <div className="flex items-start gap-2">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">

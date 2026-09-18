@@ -8,7 +8,7 @@ const PLACEHOLDER_COUNT = 3;
 
 export function Testimonials() {
   return (
-    <section className="bg-muted/30">
+    <section className="bg-gradient-to-b from-amber-50 via-stone-50 to-stone-50 dark:from-amber-950/15 dark:via-stone-950 dark:to-stone-950">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">

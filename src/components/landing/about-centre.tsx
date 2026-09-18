@@ -26,7 +26,7 @@ export function AboutCentre() {
       </Reveal>
 
       <Reveal delay={0.15} className="mt-14 grid gap-10 lg:grid-cols-2 lg:items-center">
-        <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted">
+        <div className="overflow-hidden rounded-2xl border-4 border-emerald-100 bg-muted shadow-lg shadow-emerald-900/5 dark:border-emerald-950/60">
           <Image
             src="/images/centre-anle.jpg"
             alt="Une éducatrice du centre ANLE accompagne un enfant dans l'apprentissage de l'autonomie"
@@ -58,7 +58,7 @@ export function AboutCentre() {
             ))}
           </ul>
 
-          <div className="mt-7 grid gap-3 border-t border-border/60 pt-6 sm:grid-cols-2">
+          <div className="mt-7 grid gap-3 rounded-2xl border border-emerald-200/70 bg-emerald-50/60 p-5 sm:grid-cols-2 dark:border-emerald-900/50 dark:bg-emerald-950/10">
             <div className="flex items-start gap-2.5 text-sm">
               <MapPin className="mt-0.5 size-4 shrink-0 text-emerald-700 dark:text-emerald-400" />
               <span className="text-muted-foreground">

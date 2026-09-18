@@ -17,6 +17,7 @@ const MODULES = [
       "Suivi de votre progression module par module",
     ],
     tint: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+    bar: "bg-amber-500",
   },
   {
     icon: Users,
@@ -29,6 +30,7 @@ const MODULES = [
       "Lives Q&A avec la spécialiste (bientôt disponible)",
     ],
     tint: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400",
+    bar: "bg-emerald-600",
   },
   {
     icon: NotebookPen,
@@ -41,12 +43,13 @@ const MODULES = [
       "Analyse par la spécialiste avant vos consultations (bientôt disponible)",
     ],
     tint: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-400",
+    bar: "bg-sky-600",
   },
 ];
 
 export function ModulesShowcase() {
   return (
-    <section id="modules" className="relative overflow-hidden bg-muted/30">
+    <section id="modules" className="relative overflow-hidden bg-gradient-to-b from-emerald-50 via-stone-50 to-stone-50 dark:from-emerald-950/20 dark:via-stone-950 dark:to-stone-950">
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <Reveal className="mx-auto max-w-2xl text-center">
           <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -70,10 +73,11 @@ export function ModulesShowcase() {
               }}
               whileHover={{ y: -4 }}
               className={cn(
-                "flex flex-col rounded-2xl border border-border/60 bg-background p-7 shadow-sm transition-shadow hover:shadow-lg",
+                "relative flex flex-col overflow-hidden rounded-2xl border border-border/60 bg-background p-7 shadow-sm transition-shadow hover:shadow-lg",
                 i === 1 && "lg:-translate-y-3",
               )}
             >
+              <span aria-hidden className={cn("absolute inset-x-0 top-0 h-1.5", module.bar)} />
               <div className="flex items-center justify-between">
                 <div className={cn("flex size-11 items-center justify-center rounded-xl", module.tint)}>
                   <module.icon className="size-5.5" />

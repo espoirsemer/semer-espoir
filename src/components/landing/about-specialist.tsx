@@ -33,14 +33,14 @@ export function AboutSpecialist() {
                 Carine Dorothée Bakom
               </h2>
               <p className="mt-4 text-slate-300">
-                Carine Dorothée Bakom accompagne au quotidien les enfants du
-                centre ANLE et leurs familles, avec un objectif simple :
-                donner à chaque enfant les moyens de gagner en autonomie, de
-                suivre une scolarité adaptée et de trouver sa place dans la
-                société. Semer Espoir est né de cette conviction : cet
-                accompagnement ne doit pas s&apos;arrêter aux portes du
-                centre, mais suivre chaque famille au quotidien, où qu&apos;elle
-                se trouve.
+                Carine Dorothée Bakom accompagne au quotidien des enfants à
+                besoins spécifiques et leurs familles, avec un objectif
+                simple : donner à chaque enfant les moyens de gagner en
+                autonomie et de trouver sa place dans la société. Semer
+                Espoir est né de cette conviction : cet accompagnement ne
+                doit pas s&apos;arrêter à la porte d&apos;une consultation,
+                mais suivre chaque famille au quotidien, où qu&apos;elle se
+                trouve.
               </p>
             </div>
           </div>

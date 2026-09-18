@@ -10,7 +10,7 @@ const PILLARS = [
     icon: GraduationCap,
     title: "Vous former",
     description:
-      "Des vidéos et des ressources terrain conçues par l'équipe du centre ANLE, pour agir avec des outils qui fonctionnent vraiment.",
+      "Des vidéos et des ressources terrain conçues par notre équipe, pour agir avec des outils qui fonctionnent vraiment.",
     tint: "bg-amber-500/15 text-amber-400",
     dot: "bg-amber-500 text-[oklch(0.15_0.03_258)]",
     card: "border-amber-500/25 bg-amber-500/5",

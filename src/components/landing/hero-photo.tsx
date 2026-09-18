@@ -20,7 +20,7 @@ export function HeroPhoto() {
       >
         <Image
           src="/images/hero-enfants.jpg"
-          alt="Une éducatrice du centre ANLE joue avec un groupe d'enfants à besoins spécifiques"
+          alt="Une éducatrice joue avec un groupe d'enfants à besoins spécifiques"
           width={1448}
           height={1086}
           className="aspect-4/3 w-full object-cover"

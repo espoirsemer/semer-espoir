@@ -23,7 +23,7 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "Semer Espoir",
   description:
-    "Accompagnement des familles d'enfants à besoins spécifiques : formation, communauté et suivi clinique, porté par le centre ANLE à Douala.",
+    "Accompagnement des familles d'enfants à besoins spécifiques : formation, communauté et suivi clinique avec une spécialiste, où que vous soyez dans le monde.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

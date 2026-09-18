@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 const ITEMS = [
   { icon: Globe2, label: "Accessible partout, 100% en ligne", tint: "text-amber-400" },
   { icon: ShieldCheck, label: "Vos données protégées et confidentielles", tint: "text-lime-400" },
-  { icon: HeartHandshake, label: "Porté par le centre ANLE, à Douala", tint: "text-amber-400" },
+  { icon: HeartHandshake, label: "Suivi personnalisé par une spécialiste", tint: "text-amber-400" },
   { icon: Sprout, label: "Un abonnement simple, sans engagement", tint: "text-lime-400" },
 ];
 

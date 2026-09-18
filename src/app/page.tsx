@@ -4,7 +4,6 @@ import { TrustBar } from "@/components/landing/trust-bar";
 import { PainPoints } from "@/components/landing/pain-points";
 import { Pillars } from "@/components/landing/pillars";
 import { ModulesShowcase } from "@/components/landing/modules-showcase";
-import { AboutCentre } from "@/components/landing/about-centre";
 import { AboutSpecialist } from "@/components/landing/about-specialist";
 import { Pricing } from "@/components/landing/pricing";
 import { Testimonials } from "@/components/landing/testimonials";
@@ -25,7 +24,6 @@ export default async function LandingPage() {
         <PainPoints />
         <Pillars />
         <ModulesShowcase />
-        <AboutCentre />
         <AboutSpecialist />
         <Pricing plans={plans} />
         <Testimonials />

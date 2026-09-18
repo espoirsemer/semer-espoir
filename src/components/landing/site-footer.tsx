@@ -19,14 +19,10 @@ export function SiteFooter() {
             <Link href="/inscription" className="transition-colors hover:text-slate-100">
               Inscription
             </Link>
-            <a href="tel:+237695521300" className="transition-colors hover:text-slate-100">
-              (+237) 695 52 13 00
-            </a>
           </div>
         </div>
-        <div className="mt-8 flex flex-col items-center justify-between gap-2 border-t border-slate-800 pt-6 text-xs text-slate-500 sm:flex-row">
-          <p>© {new Date().getFullYear()} Semer Espoir — Centre ANLE. Tous droits réservés.</p>
-          <p>Ndogpassi II, Douala — Cameroun</p>
+        <div className="mt-8 border-t border-slate-800 pt-6 text-center text-xs text-slate-500 sm:text-left">
+          <p>© {new Date().getFullYear()} Semer Espoir. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

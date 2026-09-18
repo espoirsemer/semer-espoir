@@ -8,6 +8,7 @@ import {
   UserRound,
   ShieldCheck,
   HeartHandshake,
+  BookOpen,
 } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { CommunityNotifier } from "@/components/community/community-notifier";
@@ -25,6 +26,7 @@ const PARENT_NAV = [
     label: "Prise en charge à distance",
     icon: <HeartHandshake />,
   },
+  { href: "/espace-parent/ressources", label: "Ressources", icon: <BookOpen /> },
   { href: "/espace-parent/journal", label: "Journal de bord", icon: <NotebookPen /> },
   { href: "/espace-parent/profil", label: "Profil de l'enfant", icon: <UserRound /> },
 ];

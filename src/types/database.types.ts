@@ -173,6 +173,40 @@ export interface RemoteCareRequest {
   updated_at: string;
 }
 
+export type ResourceFormationKey = "nutrition" | "massage" | "langage";
+export type ResourcePurchaseStatus = "pending" | "confirmed";
+
+export interface ResourceFormation {
+  key: ResourceFormationKey;
+  name: string;
+  price_amount: number;
+  price_currency: string;
+  payment_link: string | null;
+  updated_at: string;
+}
+
+export interface ResourcePurchase {
+  id: string;
+  parent_id: string;
+  formation_key: ResourceFormationKey;
+  amount: number;
+  currency: string;
+  payment_reference: string | null;
+  payment_confirmed: boolean;
+  status: ResourcePurchaseStatus;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ResourceFormationContent {
+  id: string;
+  formation_key: ResourceFormationKey;
+  title: string;
+  type: ContentType;
+  storage_path: string;
+  created_at: string;
+}
+
 export interface LiveSession {
   id: string;
   title: string;

@@ -1,4 +1,4 @@
-import { BarChart3, PlayCircle, ShieldCheck, Users, CalendarClock, Video, Home, HeartHandshake } from "lucide-react";
+import { BarChart3, PlayCircle, ShieldCheck, Users, CalendarClock, Video, Home, HeartHandshake, BookOpen } from "lucide-react";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { CommunityNotifier } from "@/components/community/community-notifier";
 import { ConsultationNotifier } from "@/components/consultations/consultation-notifier";
@@ -15,6 +15,7 @@ const ADMIN_NAV = [
     label: "Prise en charge à distance",
     icon: <HeartHandshake />,
   },
+  { href: "/admin/ressources", label: "Ressources", icon: <BookOpen /> },
   { href: "/admin/abonnes", label: "Abonnés", icon: <Users /> },
   { href: "/espace-parent", label: "Espace parent", icon: <Home /> },
 ];

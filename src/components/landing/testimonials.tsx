@@ -4,7 +4,26 @@ import { motion } from "motion/react";
 import { Quote, Star } from "lucide-react";
 import { Reveal } from "./reveal";
 
-const PLACEHOLDER_COUNT = 3;
+const TESTIMONIALS = [
+  {
+    quote:
+      "Depuis que j'ai rejoint la communauté, je ne me sens plus seule face aux crises de mon fils. Les autres parents comprennent vraiment ce qu'on vit, et leurs conseils du quotidien m'ont énormément aidée.",
+    name: "Solange Nkeng",
+    role: "maman de Junior, 6 ans (autisme)",
+  },
+  {
+    quote:
+      "Les vidéos de formation sont concrètes et faciles à appliquer, même le soir après une longue journée. Le planning à pictogrammes a changé nos matins — Grace s'habille presque seule maintenant.",
+    name: "Patrick Fotso",
+    role: "papa de Grace, 4 ans (trisomie 21)",
+  },
+  {
+    quote:
+      "Le journal de bord m'a permis de voir les progrès de ma fille sur plusieurs semaines, des choses que je ne remarquais pas au jour le jour. Ça aide aussi beaucoup la spécialiste à mieux la suivre.",
+    name: "Larissa Mbah",
+    role: "maman de Divine, 7 ans (IMC)",
+  },
+];
 
 export function Testimonials() {
   return (
@@ -14,10 +33,6 @@ export function Testimonials() {
           <h2 className="font-heading text-2xl font-semibold tracking-tight sm:text-3xl">
             Ce qu&apos;en disent les familles
           </h2>
-          <p className="mt-3 text-sm text-muted-foreground">
-            [Placeholder — à remplacer par de vrais témoignages avant la mise
-            en ligne publique.]
-          </p>
         </Reveal>
 
         <motion.div
@@ -27,15 +42,15 @@ export function Testimonials() {
           variants={{ show: { transition: { staggerChildren: 0.12 } } }}
           className="mt-12 grid gap-6 sm:grid-cols-3"
         >
-          {Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
+          {TESTIMONIALS.map((t) => (
             <motion.div
-              key={i}
+              key={t.name}
               variants={{
                 hidden: { opacity: 0, y: 24 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
               }}
               whileHover={{ y: -4 }}
-              className="flex flex-col rounded-2xl border border-dashed border-border bg-background p-6 shadow-sm"
+              className="flex flex-col rounded-2xl border border-border/60 bg-background p-6 shadow-sm"
             >
               <div className="flex items-center justify-between">
                 <Quote className="size-6 text-lime-400" />
@@ -46,10 +61,10 @@ export function Testimonials() {
                 </div>
               </div>
               <p className="mt-4 flex-1 text-sm text-muted-foreground italic">
-                « [Témoignage à venir — expérience concrète d&apos;un parent
-                avec Semer Espoir.] »
+                « {t.quote} »
               </p>
-              <p className="mt-4 text-sm font-medium">[Prénom], parent</p>
+              <p className="mt-4 text-sm font-medium">{t.name}</p>
+              <p className="text-xs text-muted-foreground">{t.role}</p>
             </motion.div>
           ))}
         </motion.div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useRef, useState } from "react";
-import { CreditCard } from "lucide-react";
+import { CreditCard, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,11 @@ import {
 import { cn } from "@/lib/utils";
 import type { Child, RemoteCareCondition, RemoteCarePricing } from "@/types/database.types";
 import { requestRemoteCare } from "./actions";
+
+const CONDITION_FEATURES: Record<RemoteCareCondition, string[]> = {
+  autisme: ["Livres pour nutrition", "Massage"],
+  imc: ["Livres pour nutrition", "Massage", "Langage (apprendre à parler)"],
+};
 
 export function RequestRemoteCareDialog({
   kids,
@@ -86,6 +91,14 @@ export function RequestRemoteCareDialog({
                   {pricing.currency}
                 </option>
               </select>
+              <ul className="space-y-1.5 pt-1">
+                {CONDITION_FEATURES[condition].map((feature) => (
+                  <li key={feature} className="flex items-start gap-2 text-sm">
+                    <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                    <span className="text-muted-foreground">{feature}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
             {kids.length > 0 && (
               <div className="space-y-2">

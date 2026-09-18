@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { requireProfile } from "@/lib/auth";
@@ -10,6 +11,11 @@ import { CancelRequestButton } from "./cancel-request-button";
 const CONDITION_LABELS: Record<string, string> = {
   autisme: "Autisme",
   imc: "IMC (infirmité motrice cérébrale)",
+};
+
+const CONDITION_FEATURES: Record<string, string[]> = {
+  autisme: ["Livres pour nutrition", "Massage"],
+  imc: ["Livres pour nutrition", "Massage", "Langage (apprendre à parler)"],
 };
 
 export default async function PriseEnChargePage() {
@@ -50,6 +56,14 @@ export default async function PriseEnChargePage() {
             <p className="mt-1 text-2xl font-semibold">
               {formattedAutisme} {pricing.currency}
             </p>
+            <ul className="mt-4 space-y-2">
+              {CONDITION_FEATURES.autisme.map((feature) => (
+                <li key={feature} className="flex items-start gap-2 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <span className="text-muted-foreground">{feature}</span>
+                </li>
+              ))}
+            </ul>
           </CardContent>
         </Card>
         <Card>
@@ -58,6 +72,14 @@ export default async function PriseEnChargePage() {
             <p className="mt-1 text-2xl font-semibold">
               {formattedImc} {pricing.currency}
             </p>
+            <ul className="mt-4 space-y-2">
+              {CONDITION_FEATURES.imc.map((feature) => (
+                <li key={feature} className="flex items-start gap-2 text-sm">
+                  <Check className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <span className="text-muted-foreground">{feature}</span>
+                </li>
+              ))}
+            </ul>
           </CardContent>
         </Card>
       </div>

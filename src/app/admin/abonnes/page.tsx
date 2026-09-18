@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/types/database.types";
+import { RoleToggleButton } from "./role-toggle-button";
 
 const TIER_LABELS: Record<string, string> = {
   tier_1: "Abonnement",
@@ -19,6 +20,13 @@ export default async function AdminAbonnesPage({
 }) {
   const { q } = await searchParams;
   const supabase = await createClient();
+
+  const { data: admins } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("role", "admin")
+    .order("created_at", { ascending: false });
+  const adminList = (admins as Profile[] | null) ?? [];
 
   let query = supabase
     .from("profiles")
@@ -41,6 +49,38 @@ export default async function AdminAbonnesPage({
           Rechercher un parent, consulter son dashboard enfant (Tier VIP).
         </p>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Administrateurs</CardTitle>
+          <CardDescription>
+            Ces comptes ont accès à l&apos;ensemble du panel admin. Nommez un
+            parent administrateur depuis sa fiche.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {adminList.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Aucun administrateur.</p>
+          ) : (
+            <div className="divide-y divide-border/60 rounded-lg border border-border/60">
+              {adminList.map((admin) => (
+                <div
+                  key={admin.id}
+                  className="flex items-center justify-between gap-3 px-4 py-3"
+                >
+                  <Link
+                    href={`/admin/abonnes/${admin.id}`}
+                    className="font-medium hover:underline"
+                  >
+                    {admin.full_name ?? "Sans nom"}
+                  </Link>
+                  <RoleToggleButton profileId={admin.id} role="admin" />
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <form className="flex max-w-sm gap-2">
         <Input

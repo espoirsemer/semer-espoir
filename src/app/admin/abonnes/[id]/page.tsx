@@ -8,6 +8,7 @@ import type { Child, ChildNote, JournalEntry, Profile } from "@/types/database.t
 import { AnxietyTrendChart, TriggerFrequencyChart } from "@/app/espace-parent/journal/tendances/trend-charts";
 import { ChildNoteForm } from "../child-note-form";
 import { DeleteNoteButton } from "../delete-note-button";
+import { RoleToggleButton } from "../role-toggle-button";
 
 const TIER_LABELS: Record<string, string> = {
   tier_1: "Abonnement",
@@ -80,26 +81,34 @@ export default async function AdminAbonneDetailPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link
-          href="/admin/abonnes"
-          className="text-sm text-muted-foreground hover:text-foreground"
-        >
-          ← Tous les abonnés
-        </Link>
-        <div className="mt-1 flex items-center gap-3">
-          <h1 className="text-2xl font-semibold">
-            {typedProfile.full_name ?? "Sans nom"}
-          </h1>
-          {typedProfile.subscription_tier ? (
-            <Badge variant="secondary">{TIER_LABELS[typedProfile.subscription_tier]}</Badge>
-          ) : (
-            <Badge variant="outline">Sans abonnement</Badge>
-          )}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <Link
+            href="/admin/abonnes"
+            className="text-sm text-muted-foreground hover:text-foreground"
+          >
+            ← Tous les abonnés
+          </Link>
+          <div className="mt-1 flex items-center gap-3">
+            <h1 className="text-2xl font-semibold">
+              {typedProfile.full_name ?? "Sans nom"}
+            </h1>
+            {typedProfile.role === "admin" && (
+              <Badge className="bg-amber-500 text-amber-950 hover:bg-amber-500">
+                Administrateur
+              </Badge>
+            )}
+            {typedProfile.subscription_tier ? (
+              <Badge variant="secondary">{TIER_LABELS[typedProfile.subscription_tier]}</Badge>
+            ) : (
+              <Badge variant="outline">Sans abonnement</Badge>
+            )}
+          </div>
+          <p className="text-muted-foreground">
+            Inscrit le {new Date(typedProfile.created_at).toLocaleDateString("fr-FR")}
+          </p>
         </div>
-        <p className="text-muted-foreground">
-          Inscrit le {new Date(typedProfile.created_at).toLocaleDateString("fr-FR")}
-        </p>
+        <RoleToggleButton profileId={typedProfile.id} role={typedProfile.role} />
       </div>
 
       {childList.length === 0 ? (

@@ -34,3 +34,20 @@ export async function deleteChildNote(noteId: string, parentId: string) {
   await supabase.from("child_notes").delete().eq("id", noteId);
   revalidatePath(`/admin/abonnes/${parentId}`);
 }
+
+export async function setProfileRole(profileId: string, role: "admin" | "parent") {
+  const admin = await requireAdmin();
+
+  if (profileId === admin.id && role === "parent") {
+    return { error: "Vous ne pouvez pas retirer votre propre statut administrateur." };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("profiles").update({ role }).eq("id", profileId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/abonnes");
+  revalidatePath(`/admin/abonnes/${profileId}`);
+  return { error: null };
+}

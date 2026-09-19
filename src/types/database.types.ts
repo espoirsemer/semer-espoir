@@ -11,6 +11,9 @@ export interface Profile {
   role: UserRole;
   full_name: string | null;
   subscription_tier: SubscriptionTier | null;
+  subscription_expires_at: string | null;
+  subscription_reminder_sent_at: string | null;
+  subscription_expired_sent_at: string | null;
   stripe_customer_id: string | null;
   created_at: string;
 }

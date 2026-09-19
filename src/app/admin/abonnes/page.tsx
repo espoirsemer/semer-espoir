@@ -40,6 +40,7 @@ export default async function AdminAbonnesPage({
 
   const { data: profiles } = await query;
   const list = (profiles as Profile[] | null) ?? [];
+  const now = new Date();
 
   return (
     <div className="space-y-6">
@@ -114,7 +115,16 @@ export default async function AdminAbonnesPage({
                 </p>
               </div>
               {profile.subscription_tier ? (
-                <Badge variant="secondary">{TIER_LABELS[profile.subscription_tier]}</Badge>
+                <div className="flex flex-col items-end gap-1">
+                  <Badge variant="secondary">{TIER_LABELS[profile.subscription_tier]}</Badge>
+                  {profile.subscription_expires_at && (
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(profile.subscription_expires_at).getTime() >= now.getTime()
+                        ? `jusqu'au ${new Date(profile.subscription_expires_at).toLocaleDateString("fr-FR")}`
+                        : `expiré le ${new Date(profile.subscription_expires_at).toLocaleDateString("fr-FR")}`}
+                    </span>
+                  )}
+                </div>
               ) : (
                 <Badge variant="outline">Sans abonnement</Badge>
               )}

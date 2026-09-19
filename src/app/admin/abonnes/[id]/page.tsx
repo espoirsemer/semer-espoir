@@ -9,12 +9,26 @@ import { AnxietyTrendChart, TriggerFrequencyChart } from "@/app/espace-parent/jo
 import { ChildNoteForm } from "../child-note-form";
 import { DeleteNoteButton } from "../delete-note-button";
 import { RoleToggleButton } from "../role-toggle-button";
+import { SubscriptionActions } from "../subscription-actions";
 
 const TIER_LABELS: Record<string, string> = {
   tier_1: "Abonnement",
   tier_2: "Guidance",
   tier_3: "VIP",
 };
+
+function subscriptionStatusLabel(profile: Profile, now: Date): string {
+  if (!profile.subscription_tier) return "Aucun abonnement actif.";
+  if (!profile.subscription_expires_at) {
+    return "Abonnement actif (date d'expiration non définie — renouvelez pour en définir une).";
+  }
+  const expiresAt = new Date(profile.subscription_expires_at);
+  const formatted = expiresAt.toLocaleDateString("fr-FR");
+  if (expiresAt.getTime() >= now.getTime()) {
+    return `Abonnement actif jusqu'au ${formatted}.`;
+  }
+  return `Abonnement expiré depuis le ${formatted} — accès encore actif, sera suspendu si non renouvelé.`;
+}
 
 export default async function AdminAbonneDetailPage({
   params,
@@ -107,8 +121,17 @@ export default async function AdminAbonneDetailPage({
           <p className="text-muted-foreground">
             Inscrit le {new Date(typedProfile.created_at).toLocaleDateString("fr-FR")}
           </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {subscriptionStatusLabel(typedProfile, new Date())}
+          </p>
         </div>
-        <RoleToggleButton profileId={typedProfile.id} role={typedProfile.role} />
+        <div className="flex flex-col items-end gap-2">
+          <RoleToggleButton profileId={typedProfile.id} role={typedProfile.role} />
+          <SubscriptionActions
+            profileId={typedProfile.id}
+            hasSubscription={typedProfile.subscription_tier != null}
+          />
+        </div>
       </div>
 
       {childList.length === 0 ? (

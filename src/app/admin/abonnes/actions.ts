@@ -51,3 +51,48 @@ export async function setProfileRole(profileId: string, role: "admin" | "parent"
   revalidatePath(`/admin/abonnes/${profileId}`);
   return { error: null };
 }
+
+export async function activateSubscription(profileId: string) {
+  await requireAdmin();
+
+  const expiresAt = new Date();
+  expiresAt.setMonth(expiresAt.getMonth() + 1);
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      subscription_tier: "tier_1",
+      subscription_expires_at: expiresAt.toISOString(),
+      subscription_reminder_sent_at: null,
+      subscription_expired_sent_at: null,
+    })
+    .eq("id", profileId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/abonnes");
+  revalidatePath(`/admin/abonnes/${profileId}`);
+  return { error: null };
+}
+
+export async function suspendSubscription(profileId: string) {
+  await requireAdmin();
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      subscription_tier: null,
+      subscription_expires_at: null,
+      subscription_reminder_sent_at: null,
+      subscription_expired_sent_at: null,
+    })
+    .eq("id", profileId);
+
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/abonnes");
+  revalidatePath(`/admin/abonnes/${profileId}`);
+  return { error: null };
+}
